@@ -1,0 +1,14 @@
+# vim
+*.swp
+*~
+
+# java
+*.class
+*.jar
+
+# gradle
+App/.gradle
+App/build/
+App/gradle-app.setting
+!App/gradle-wrapper.jar
+App/.gradletasknamecache
