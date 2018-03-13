@@ -21,8 +21,18 @@ public class App extends JFrame implements GLEventListener {
 
     public App() {
         // Set the window properties
+        // set the title
         setTitle("Crappy Touhou Clone dot EXE");
-        setSize(800, 600);
+        // set the window size
+        setSize(1600, 900);
+        // set to fullscreen
+        // setExtendedState(JFrame.MAXIMIZED_BOTH);
+        // remove bar on top
+        // setUndecorated(true);
+        // disable window resize
+        setResizable(false);
+        // set thing to close
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // Create new canvas
         _myCanvas = new GLCanvas();
@@ -52,6 +62,7 @@ public class App extends JFrame implements GLEventListener {
             lag = lag + elapsed;
             previous = current;
 
+            // process the input
             processInput();
 
             // keep updating the game while we are running at slow fps
