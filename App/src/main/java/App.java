@@ -15,7 +15,7 @@ public class App extends JFrame implements GLEventListener {
     private GLCanvas _myCanvas;
     // Frame tracking stuff
     // list of the past N render times. for getting fps values
-    private ArrayList<Double> _renderTimes = new ArrayList<Double>();
+    private ArrayList<Long> _renderTimes = new ArrayList<Long>();
     // the amount of the next frame we covered in our update method
     private double _frameCovered = 0.0;
 
@@ -50,13 +50,13 @@ public class App extends JFrame implements GLEventListener {
      * by MS_PER_UPDATE. Will render the game as fast as it can.
      */
     public void gameLoop() {
-        double current;
-        double elapsed;
+        long current;
+        long elapsed;
         double lag = 0.0;
-        double previous = System.currentTimeMillis();
+        long previous = System.nanoTime();
 
         while (true) {
-            current = System.currentTimeMillis();
+            current = System.nanoTime();
             elapsed = current - previous;
 
             lag = lag + elapsed;
@@ -121,9 +121,12 @@ public class App extends JFrame implements GLEventListener {
         // Get the sum of the render times in the list
         double totalTime = 0;
 
-        for (Double d : _renderTimes) {
+        for (Long d : _renderTimes) {
             totalTime = totalTime + d;
         }
+
+        // nanoTime to millis
+        totalTime = totalTime / 1000 / 1000;
 
         // Display the average of the render times
         textRenderer.draw(String.format("%.01f ms", totalTime / _renderTimes.size()), 0, 0);
