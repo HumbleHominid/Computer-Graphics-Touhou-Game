@@ -129,7 +129,7 @@ public class App extends JFrame implements GLEventListener {
         totalTime = totalTime / 1000000;
 
         // Display the average of the render times
-        textRenderer.draw(String.format("%.01f ms", totalTime / _renderTimes.size()), 0, 0);
+        textRenderer.draw(String.format("%.02f ms", totalTime / _renderTimes.size()), 0, 0);
         textRenderer.endRendering();
     }
 
