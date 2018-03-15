@@ -20,18 +20,17 @@ public class App extends JFrame implements GLEventListener {
     private double _frameCovered = 0.0;
 
     public App() {
-        // Set the window properties
-        // set the title
+        // set the window title
         setTitle("Crappy Touhou Clone dot EXE");
         // set the window size
         setSize(1600, 900);
-        // set to fullscreen
+        // set window to fullscreen
         // setExtendedState(JFrame.MAXIMIZED_BOTH);
-        // remove bar on top
+        // remove bar on top of window
         // setUndecorated(true);
         // disable window resize
         setResizable(false);
-        // set thing to close
+        // set window 'x' to close
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // Create new canvas
@@ -82,6 +81,7 @@ public class App extends JFrame implements GLEventListener {
             // set frameCovered. this is for extrapolating rendering
             _frameCovered = lag / MS_PER_UPDATE;
 
+            // tell the canvas to display all its listeners
             _myCanvas.display();
         }
     }
@@ -126,7 +126,7 @@ public class App extends JFrame implements GLEventListener {
         }
 
         // nanoTime to millis
-        totalTime = totalTime / 1000 / 1000;
+        totalTime = totalTime / 1000000;
 
         // Display the average of the render times
         textRenderer.draw(String.format("%.01f ms", totalTime / _renderTimes.size()), 0, 0);
@@ -164,7 +164,6 @@ public class App extends JFrame implements GLEventListener {
      * main
      */
     public static void main(String[] args) {
-        App app = new App();
-        app.gameLoop();
+        new App().gameLoop();
     }
 }
