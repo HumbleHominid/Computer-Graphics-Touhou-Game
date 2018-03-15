@@ -104,9 +104,6 @@ public class App extends JFrame implements GLEventListener {
     public void display(GLAutoDrawable glAD) {
         GL4 gl = (GL4) GLContext.getCurrentGL();
 
-        // Disable V-Sync. Bad for poopoo computers though
-        glAD.getGL().setSwapInterval(0);
-
         // Clearing the canvas is important
         gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -149,8 +146,9 @@ public class App extends JFrame implements GLEventListener {
      * @see com.jogamp.opengl.GLEventListener#init(com.jogamp.opengl.GLAutoDrawable)
      */
     @Override
-    public void init(GLAutoDrawable arg0) {
-        // TODO
+    public void init(GLAutoDrawable glAD) {
+        // Disable V-Sync. Bad for poopoo computers though
+        glAD.getGL().setSwapInterval(0);
     }
 
     /*
