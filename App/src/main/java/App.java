@@ -57,7 +57,6 @@ public class App extends JFrame implements GLEventListener {
         while (true) {
             current = System.nanoTime();
             elapsed = current - previous;
-
             lag = lag + elapsed;
             previous = current;
 
@@ -112,9 +111,11 @@ public class App extends JFrame implements GLEventListener {
         gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // print some text
-        TextRenderer textRenderer = new TextRenderer(new Font("Verdana", Font.BOLD, 18));
+        TextRenderer textRenderer = new TextRenderer(new Font("Verdana",
+                Font.BOLD, 18));
 
-        textRenderer.beginRendering(glAD.getSurfaceWidth(), glAD.getSurfaceHeight());
+        textRenderer.beginRendering(glAD.getSurfaceWidth(),
+                glAD.getSurfaceHeight());
         textRenderer.setColor(Color.YELLOW);
         textRenderer.setSmoothing(true);
 
@@ -129,7 +130,8 @@ public class App extends JFrame implements GLEventListener {
         totalTime = totalTime / 1000000;
 
         // Display the average of the render times
-        textRenderer.draw(String.format("%.02f ms", totalTime / _renderTimes.size()), 0, 0);
+        textRenderer.draw(String.format("%.02f ms",
+                totalTime / _renderTimes.size()), 0, 0);
         textRenderer.endRendering();
     }
 
@@ -156,7 +158,8 @@ public class App extends JFrame implements GLEventListener {
      * @see com.jogamp.opengl.GLEventListener#reshape(com.jogamp.opengl.GLAutoDrawable, int, int, int, int)
      */
     @Override
-    public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3, int arg4) {
+    public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3,
+            int arg4) {
         // TODO
     }
 
