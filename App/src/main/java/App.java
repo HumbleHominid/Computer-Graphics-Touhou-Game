@@ -75,7 +75,7 @@ public class App extends JFrame implements GLEventListener {
             // Track the elapsed time for displaying fps purposes
             _renderTimes.add(elapsed);
 
-            if (_renderTimes.size() > 10) {
+            if (_renderTimes.size() > 50) {
                 _renderTimes.remove(0);
             }
 
@@ -104,6 +104,9 @@ public class App extends JFrame implements GLEventListener {
     @Override
     public void display(GLAutoDrawable glAD) {
         GL4 gl = (GL4) GLContext.getCurrentGL();
+
+        // Disable V-Sync. Bad for poopoo computers though
+        glAD.getGL().setSwapInterval(0);
 
         // Clearing the canvas is important
         gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
