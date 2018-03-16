@@ -15,7 +15,9 @@ public class App extends JFrame implements GLEventListener {
     private GLCanvas _myCanvas;
     // Frame tracking stuff
     // list of the past N render times. for getting fps values
-    private ArrayList<Long> _renderTimes = new ArrayList<Long>();
+    private long[] _renderTimes = new long[50];
+    // count of _renderTimes added. for looping
+    private int _numRenderTimes = _renderTimes.length;
     // the amount of the next frame we covered in our update method
     private double _frameCovered = 0.0;
 
@@ -71,11 +73,13 @@ public class App extends JFrame implements GLEventListener {
             }
 
             // Track the elapsed time for displaying fps purposes
-            _renderTimes.add(elapsed);
-
-            if (_renderTimes.size() > 50) {
-                _renderTimes.remove(0);
+            if (_numRenderTimes == _renderTimes.length) {
+                _numRenderTimes = 0;
             }
+
+            _renderTimes[_numRenderTimes] = elapsed;
+
+            _numRenderTimes++;
 
             // set frameCovered. this is for extrapolating rendering
             _frameCovered = lag / MS_PER_UPDATE;
@@ -124,11 +128,11 @@ public class App extends JFrame implements GLEventListener {
         }
 
         // nanoTime to millis
-        totalTime = totalTime / 1000000;
+        totalTime = totalTime / 1000000.0;
 
         // Display the average of the render times
         textRenderer.draw(String.format("%.02f ms",
-                totalTime / _renderTimes.size()), 0, 0);
+                totalTime / (double) _renderTimes.length), 0, 0);
         textRenderer.endRendering();
     }
 
