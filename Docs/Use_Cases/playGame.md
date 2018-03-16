@@ -1,5 +1,5 @@
-| |
-| -:|- |
+| Property | Value |
+| ---:| --- |
 | Use Case Name: | Play Game |
 | Created By: | Michael Fryer |
 | Date Created: | March 16th, 2018 |
