@@ -35,7 +35,17 @@
 
 <tr>
 <td>Alternative Flows:</td>
-<td>None</td>
+<td>
+<ol>
+<li>
+<b>Player Cancels Selction</b> (Branch during 3)
+<ol>
+<li>System returns to menu</li>
+</ol>
+</li>
+</ol>
+
+</td>
 </tr>
 
 <tr>
