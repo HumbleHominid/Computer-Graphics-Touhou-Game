@@ -2,27 +2,27 @@
 <tbody>
 
 <tr>
-<td>Actors:</td>
+<td align="right">Actors:</td>
 <td>Player</td>
 </tr>
 
 <tr>
-<td>Description:</td>
+<td align="right">Description:</td>
 <td>A player wants to start a run of the game</td>
 </tr>
 
 <tr>
-<td>Preconditions:</td>
+<td align="right">Preconditions:</td>
 <td>The application is running</td>
 </tr>
 
 <tr>
-<td>Postconditions:</td>
+<td align="right">Postconditions:</td>
 <td>A specified diffuculty of the game is started</td>
 </tr>
 
 <tr>
-<td>Normal Flow:</td>
+<td align="right">Normal Flow:</td>
 <td>
 <ol>
 <li>Player indicates they want to start a game run.</li>
@@ -34,7 +34,7 @@
 </tr>
 
 <tr>
-<td>Alternative Flows:</td>
+<td align="right">Alternative Flows:</td>
 <td>
 <ol>
 <li>
@@ -49,47 +49,47 @@
 </tr>
 
 <tr>
-<td>Exceptions:</td>
+<td align="right">Exceptions:</td>
 <td>None</td>
 </tr>
 
 <tr>
-<td>Includes:</td>
+<td align="right">Includes:</td>
 <td>None</td>
 </tr>
 
 <tr>
-<td>Extends:</td>
+<td align="right">Extends:</td>
 <td>None</td>
 </tr>
 
 <tr>
-<td>Priority:</td>
+<td align="right">Priority:</td>
 <td>High</td>
 </tr>
 
 <tr>
-<td>Frequency of Use:</td>
+<td align="right">Frequency of Use:</td>
 <td>About 99% of application runs.</td>
 </tr>
 
 <tr>
-<td>Business Rules:</td>
+<td align="right">Business Rules:</td>
 <td>None</td>
 </tr>
 
 <tr>
-<td>Special Requirements:</td>
+<td align="right">Special Requirements:</td>
 <td>None</td>
 </tr>
 
 <tr>
-<td>Assumptions:</td>
+<td align="right">Assumptions:</td>
 <td>None</td>
 </tr>
 
 <tr>
-<td>Notes and Issues:</td>
+<td align="right">Notes and Issues:</td>
 <td>All difficulties can be played at anytime</td>
 </tr>
 
