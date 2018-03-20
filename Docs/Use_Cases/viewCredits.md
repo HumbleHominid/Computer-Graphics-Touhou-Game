@@ -53,7 +53,7 @@
         </tr>
         <tr>
             <td align="right">Priority:</td>
-            <td>Medium</td>
+            <td>Low</td>
         </tr>
         <tr>
             <td align="right">Frequency of Use:</td>
