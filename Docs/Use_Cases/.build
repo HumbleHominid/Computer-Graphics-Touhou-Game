@@ -18,5 +18,9 @@
     {
         "name": "View High Scores",
         "file": "viewHighScores.md"
+    },
+    {
+        "name": "Restart Run",
+        "file": "restartRun.md"
     }
 ]
