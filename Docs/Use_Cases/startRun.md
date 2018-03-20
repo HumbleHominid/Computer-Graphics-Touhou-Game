@@ -14,7 +14,7 @@
         </tr>
         <tr>
             <td>Postconditions:</td>
-            <td>A specified diffuculty of the game is started</td>
+            <td>A specified difficulty of the game is started</td>
         </tr>
         <tr>
             <td>Normal Flow:</td>
@@ -32,7 +32,7 @@
             <td>
                 <ol>
                     <li>
-                    <b>Player Cancels Selction</b> (Branch during 3)
+                    <b>Player Cancels Section</b> (Branch during 3)
                     <ol>
                     <li>System returns to menu</li>
                     </ol>
