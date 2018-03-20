@@ -1,22 +1,27 @@
 const fs = require('fs');
+const outfile = 'README.md';
+
+function append(data = '') {
+    fs.appendFileSync(outfile, data);
+}
 
 // write blank file
-fs.writeFileSync('srs.md', '');
+fs.writeFileSync(outfile, '');
 
 // add title
-fs.appendFileSync('srs.md', '# Touhou Fan Game SRS\n\n');
+append('# Touhou Fan Game SRS\n\n');
 
 // add actors
-fs.appendFileSync('srs.md', '## Actors\n');
-fs.appendFileSync('srs.md', fs.readFileSync('actors.md'));
+append('## Actors\n');
+append(fs.readFileSync('actors.md'));
 
 // Hard coded search through `Use_Cases` dir for now
 let caseData = JSON.parse(fs.readFileSync('Use_Cases/.build'));
 
-fs.appendFileSync('srs.md', '\n## Use Cases\n\n');
+append('\n## Use Cases\n\n');
 
 caseData.forEach((useCase) => {
     let fileData = fs.readFileSync(`Use_Cases/${useCase.file}`);
 
-    fs.appendFileSync('srs.md', `### ${useCase.name}\n${fileData}\n`);
+    append(`### ${useCase.name}\n${fileData}\n`);
 });
