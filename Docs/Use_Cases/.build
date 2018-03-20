@@ -1,3 +1,22 @@
-startRun.md
-downloadSong.md
-playerShoot.md
+[
+    {
+        "name": "Start Run",
+        "file": "startRun.md"
+    },
+    {
+        "name": "Download Song",
+        "file": "downloadSong.md"
+    },
+    {
+        "name": "View Credits",
+        "file": "viewCredits.md"
+    },
+    {
+        "name": "Player Shoot",
+        "file": "playerShoot.md"
+    },
+    {
+        "name": "View High Scores",
+        "file": "viewHighScores.md"
+    }
+]
