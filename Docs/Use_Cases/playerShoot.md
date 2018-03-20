@@ -6,7 +6,7 @@
         </tr>
         <tr>
             <td align="right">Description:</td>
-            <td>The player wants to shoot a bullet/td>
+            <td>The player wants to shoot a bullet</td>
         </tr>
         <tr>
             <td align="right">Preconditions:</td>
