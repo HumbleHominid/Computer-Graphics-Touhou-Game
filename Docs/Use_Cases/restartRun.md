@@ -21,7 +21,7 @@
             <td>
                 <ol>
                     <li>Player indicates they want to restart a game run.</li>
-                    <li>System resets lives, power, and score to default. System starts the game from Stage 0 of the current difficulty.<li>
+                    <li>System resets lives, power, and score to default. System starts the game from Stage 0 of the current difficulty.</li>
                 </ol>
             </td>
         </tr>
