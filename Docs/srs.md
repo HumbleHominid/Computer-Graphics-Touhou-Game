@@ -1,3 +1,12 @@
+# Touhou Fan Game SRS
+
+## Actors
+| Actor | Description |
+| ---: | --- |
+| Player | The person that is playing the game. |
+
+## Use Cases
+
 ### Start Run
 <table>
     <tbody>
