@@ -79,6 +79,7 @@
         </tr>
     </tbody>
 </table>
+
 ### Download Song
 <table>
     <tbody>
@@ -160,6 +161,7 @@
         </tr>
     </tbody>
 </table>
+
 ### View Credits
 <table>
     <tbody>
@@ -240,6 +242,7 @@
         </tr>
     </tbody>
 </table>
+
 ### Player Shoot
 <table>
     <tbody>
@@ -310,6 +313,7 @@
         </tr>
     </tbody>
 </table>
+
 ### View High Scores
 <table>
     <tbody>
@@ -382,6 +386,7 @@
         </tr>
     </tbody>
 </table>
+
 ### Restart Run
 <table>
     <tbody>
@@ -452,3 +457,4 @@
         </tr>
     </tbody>
 </table>
+

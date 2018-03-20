@@ -12,5 +12,5 @@ let caseData = JSON.parse(fs.readFileSync('Use_Cases/.build'));
 caseData.forEach((useCase) => {
     let fileData = fs.readFileSync(`Use_Cases/${useCase.file}`);
 
-    fs.appendFileSync('srs.md', `### ${useCase.name}\n${fileData}`);
+    fs.appendFileSync('srs.md', `### ${useCase.name}\n${fileData}\n`);
 });
