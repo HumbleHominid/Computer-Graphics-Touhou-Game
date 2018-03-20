@@ -23,7 +23,7 @@ hline();
 // Hard coded search through `Use_Cases` dir for now
 let caseData = JSON.parse(fs.readFileSync('Use_Cases/.build'));
 
-append('\n## Use Cases\n\n');
+append('## Use Cases\n\n');
 
 caseData.forEach((useCase) => {
     let fileData = fs.readFileSync(`Use_Cases/${useCase.file}`);

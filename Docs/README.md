@@ -9,7 +9,6 @@
 | Player | The person that is playing the game. |
 ---
 
-
 ## Use Cases
 
 ### Start Run
