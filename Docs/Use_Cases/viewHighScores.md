@@ -22,7 +22,8 @@
                 <ol>
                     <li>Player indicates they want to view the high scores.</li>
                     <li>System displays list of difficulties.</li>
-                    <li>Player selects difficulty they want to see </li>
+                    <li>Player selects difficulty they want to see.</li>
+                    <li>System displays high scores of the difficulty the player selected.</li>
                 </ol>
             </td>
         </tr>
