@@ -9,10 +9,9 @@ function append(data = '') {
 fs.writeFileSync(outfile, '');
 
 // add title
-append('# Touhou Fan Game SRS\n\n');
+append(fs.readFileSync('title.md'));
 
 // add actors
-append('## Actors\n');
 append(fs.readFileSync('actors.md'));
 
 // Hard coded search through `Use_Cases` dir for now
