@@ -1,11 +1,14 @@
 # Touhou Fan Game SRS
 
 #### Author: *Michael Fryer*
+---
 
 ## Actors
 | Actor | Description |
 | ---: | --- |
 | Player | The person that is playing the game. |
+---
+
 
 ## Use Cases
 
