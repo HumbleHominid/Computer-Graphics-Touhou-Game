@@ -12,12 +12,16 @@
         "file": "viewCredits.md"
     },
     {
+        "name": "View High Scores",
+        "file": "viewHighScores.md"
+    },
+    {
         "name": "Player Shoot",
         "file": "playerShoot.md"
     },
     {
-        "name": "View High Scores",
-        "file": "viewHighScores.md"
+        "name": "Player Bomb",
+        "file": "playerBomb.md"
     },
     {
         "name": "Restart Run",
