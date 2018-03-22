@@ -30,5 +30,9 @@
     {
         "name": "Restart Run",
         "file": "restartRun.md"
+    },
+    {
+        "name": "Skip Dialog",
+        "file": "skipDialog.md"
     }
 ]
