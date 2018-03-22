@@ -330,6 +330,77 @@
     </tbody>
 </table>
 
+### Player Move
+<table>
+    <tbody>
+        <tr>
+            <td align="right">Actors:</td>
+            <td>Player</td>
+        </tr>
+        <tr>
+            <td align="right">Description:</td>
+            <td>The Player wants move.</td>
+        </tr>
+        <tr>
+            <td align="right">Preconditions:</td>
+            <td>The player is playing the game.</td>
+        </tr>
+        <tr>
+            <td align="right">Postconditions:</td>
+            <td>The player has been moved.</td>
+        </tr>
+        <tr>
+            <td align="right">Normal Flow:</td>
+            <td>
+                <ol>
+                    <li>Player indicates they want to move in one of the cardinal directions.</li>
+                    <li>System updates the Player's movement vector.</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">Alternative Flows:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Exceptions:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Includes:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Extends:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Priority:</td>
+            <td>High</td>
+        </tr>
+        <tr>
+            <td align="right">Frequency of Use:</td>
+            <td>Around 100% of the game runs.</td>
+        </tr>
+        <tr>
+            <td align="right">Business Rules:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Special Requirements:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Assumptions:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Notes and Issues:</td>
+            <td>None</td>
+        </tr>
+    </tbody>
+</table>
+
 ### Player Shoot
 <table>
     <tbody>
@@ -434,7 +505,7 @@
             <td>
                 <ol>
                     <li>
-                        <b>Not enough resourses to fire a bomb</b> (Branch during 2)
+                        <b>Not enough resources to fire a bomb</b> (Branch during 2)
                         <ol>
                             <li>Exit</li>
                         </ol>
@@ -476,7 +547,7 @@
         </tr>
         <tr>
             <td align="right">Notes and Issues:</td>
-            <td>Note, this does not describe the resourses needed to fire the bomb</td>
+            <td>Note, this does not describe the resources needed to fire the bomb</td>
         </tr>
     </tbody>
 </table>
@@ -531,7 +602,7 @@
         </tr>
         <tr>
             <td align="right">Frequency of Use:</td>
-            <td>About 100% of times the applicaiton is run..</td>
+            <td>About 100% of times the application is run..</td>
         </tr>
         <tr>
             <td align="right">Business Rules:</td>

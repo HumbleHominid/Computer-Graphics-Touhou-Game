@@ -47,7 +47,7 @@
         </tr>
         <tr>
             <td align="right">Frequency of Use:</td>
-            <td>About 100% of times the applicaiton is run..</td>
+            <td>About 100% of times the application is run..</td>
         </tr>
         <tr>
             <td align="right">Business Rules:</td>

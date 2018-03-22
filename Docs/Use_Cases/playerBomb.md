@@ -30,7 +30,7 @@
             <td>
                 <ol>
                     <li>
-                        <b>Not enough resourses to fire a bomb</b> (Branch during 2)
+                        <b>Not enough resources to fire a bomb</b> (Branch during 2)
                         <ol>
                             <li>Exit</li>
                         </ol>
@@ -72,7 +72,7 @@
         </tr>
         <tr>
             <td align="right">Notes and Issues:</td>
-            <td>Note, this does not describe the resourses needed to fire the bomb</td>
+            <td>Note, this does not describe the resources needed to fire the bomb</td>
         </tr>
     </tbody>
 </table>
