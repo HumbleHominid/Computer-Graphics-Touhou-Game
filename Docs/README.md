@@ -360,7 +360,17 @@
         </tr>
         <tr>
             <td align="right">Alternative Flows:</td>
-            <td>None</td>
+            <td>
+                <ol>
+                    <li>
+                        <b>Slow Move</b> (Branch during 1)
+                        <ol>
+                            <li>Player indicates they want to move in one of the cardinal directions while indicating they want to slow move.</li>
+                            <li>Return to 2</li>
+                        </ol>
+                    </li>
+                </ol>
+            </td>
         </tr>
         <tr>
             <td align="right">Exceptions:</td>
