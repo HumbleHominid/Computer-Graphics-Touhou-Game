@@ -16,6 +16,10 @@
         "file": "viewHighScores.md"
     },
     {
+        "name": "Player Move",
+        "file": "playerMove.md"
+    },
+    {
         "name": "Player Shoot",
         "file": "playerShoot.md"
     },
