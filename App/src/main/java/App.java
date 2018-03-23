@@ -123,8 +123,8 @@ public class App extends JFrame implements GLEventListener {
         // Get the sum of the render times in the list
         double totalTime = 0;
 
-        for (Long d : _renderTimes) {
-            totalTime = totalTime + d;
+        for (int i = 0; i < _renderTimes.length; i++) {
+            totalTime = totalTime + _renderTimes[i];
         }
 
         // nanoTime to millis
