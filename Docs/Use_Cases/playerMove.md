@@ -6,24 +6,22 @@
         </tr>
         <tr>
             <td align="right">Description:</td>
-            <td>A player wants to start a run of the game</td>
+            <td>The Player wants move.</td>
         </tr>
         <tr>
             <td align="right">Preconditions:</td>
-            <td>The application is running</td>
+            <td>The player is playing the game.</td>
         </tr>
         <tr>
             <td align="right">Postconditions:</td>
-            <td>A specified difficulty of the game is started</td>
+            <td>The player has been moved.</td>
         </tr>
         <tr>
             <td align="right">Normal Flow:</td>
             <td>
                 <ol>
-                    <li>Player indicates they want to start a game run.</li>
-                    <li>System displays available difficulties.</li>
-                    <li>Player selects difficulty they want to play.</li>
-                    <li>System begins a game run with the selected difficulty.</li>
+                    <li>Player indicates they want to move in one of the cardinal directions.</li>
+                    <li>System updates the Player's movement vector.</li>
                 </ol>
             </td>
         </tr>
@@ -32,10 +30,11 @@
             <td>
                 <ol>
                     <li>
-                    <b>Player Cancels Section</b> (Branch during 3)
-                    <ol>
-                    <li>System returns to menu</li>
-                    </ol>
+                        <b>Slow Move</b> (Branch during 1)
+                        <ol>
+                            <li>Player indicates they want to move in one of the cardinal directions while indicating they want to slow move.</li>
+                            <li>Return to 2</li>
+                        </ol>
                     </li>
                 </ol>
             </td>
@@ -58,7 +57,7 @@
         </tr>
         <tr>
             <td align="right">Frequency of Use:</td>
-            <td>About 99% of application runs.</td>
+            <td>Around 100% of the game runs.</td>
         </tr>
         <tr>
             <td align="right">Business Rules:</td>
@@ -74,7 +73,7 @@
         </tr>
         <tr>
             <td align="right">Notes and Issues:</td>
-            <td>All difficulties can be played at anytime</td>
+            <td>None</td>
         </tr>
     </tbody>
 </table>

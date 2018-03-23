@@ -1,0 +1,38 @@
+[
+    {
+        "name": "Start Run",
+        "file": "startRun.md"
+    },
+    {
+        "name": "Download Song",
+        "file": "downloadSong.md"
+    },
+    {
+        "name": "View Credits",
+        "file": "viewCredits.md"
+    },
+    {
+        "name": "View High Scores",
+        "file": "viewHighScores.md"
+    },
+    {
+        "name": "Player Move",
+        "file": "playerMove.md"
+    },
+    {
+        "name": "Player Shoot",
+        "file": "playerShoot.md"
+    },
+    {
+        "name": "Player Bomb",
+        "file": "playerBomb.md"
+    },
+    {
+        "name": "Restart Run",
+        "file": "restartRun.md"
+    },
+    {
+        "name": "Skip Dialog",
+        "file": "skipDialog.md"
+    }
+]

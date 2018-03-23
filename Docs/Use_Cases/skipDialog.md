@@ -6,24 +6,22 @@
         </tr>
         <tr>
             <td align="right">Description:</td>
-            <td>A player wants to start a run of the game</td>
+            <td>The player wants to skip dialog.</td>
         </tr>
         <tr>
             <td align="right">Preconditions:</td>
-            <td>The application is running</td>
+            <td>The player is playing the game and is in a dialog scene.</td>
         </tr>
         <tr>
             <td align="right">Postconditions:</td>
-            <td>A specified difficulty of the game is started</td>
+            <td>Part of the dialog has been skipped.</td>
         </tr>
         <tr>
             <td align="right">Normal Flow:</td>
             <td>
                 <ol>
-                    <li>Player indicates they want to start a game run.</li>
-                    <li>System displays available difficulties.</li>
-                    <li>Player selects difficulty they want to play.</li>
-                    <li>System begins a game run with the selected difficulty.</li>
+                    <li>Player indicates they want to skip dialog.</li>
+                    <li>System progress to next dialog block.</li>
                 </ol>
             </td>
         </tr>
@@ -32,10 +30,11 @@
             <td>
                 <ol>
                     <li>
-                    <b>Player Cancels Section</b> (Branch during 3)
-                    <ol>
-                    <li>System returns to menu</li>
-                    </ol>
+                        <b>No next dialog block</b> (Branch during 2)
+                        <ol>
+                            <li>System exits dialog scene.</li>
+                            <li>Exit</li>
+                        </ol>
                     </li>
                 </ol>
             </td>
@@ -54,11 +53,11 @@
         </tr>
         <tr>
             <td align="right">Priority:</td>
-            <td>High</td>
+            <td>Low</td>
         </tr>
         <tr>
             <td align="right">Frequency of Use:</td>
-            <td>About 99% of application runs.</td>
+            <td>About 100% of time a dialog scene is reached.</td>
         </tr>
         <tr>
             <td align="right">Business Rules:</td>
@@ -74,7 +73,7 @@
         </tr>
         <tr>
             <td align="right">Notes and Issues:</td>
-            <td>All difficulties can be played at anytime</td>
+            <td>Note this skips a part of he dialog scene, not the whole scene.</td>
         </tr>
     </tbody>
 </table>
