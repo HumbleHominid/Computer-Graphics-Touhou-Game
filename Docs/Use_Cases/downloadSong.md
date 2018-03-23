@@ -6,43 +6,43 @@
         </tr>
         <tr>
             <td align="right">Description:</td>
-            <td>A player wants to start a run of the game</td>
+            <td>A player wants to download one of the songs in the game.</td>
         </tr>
         <tr>
             <td align="right">Preconditions:</td>
-            <td>The application is running</td>
+            <td>The application is running.</td>
         </tr>
         <tr>
             <td align="right">Postconditions:</td>
-            <td>A specified difficulty of the game is started</td>
+            <td>A song has been downloaded.</td>
         </tr>
         <tr>
             <td align="right">Normal Flow:</td>
             <td>
                 <ol>
-                    <li>Player indicates they want to start a game run.</li>
-                    <li>System displays available difficulties.</li>
-                    <li>Player selects difficulty they want to play.</li>
-                    <li>System begins a game run with the selected difficulty.</li>
+                    <li>Player indicates they want to download a song.</li>
+                    <li>System prompts user for a download location.</li>
+                    <li>User enters a download location.</li>
+                    <li>System saves a copy of the song at the desired location.</li>
                 </ol>
             </td>
         </tr>
         <tr>
             <td align="right">Alternative Flows:</td>
-            <td>
-                <ol>
-                    <li>
-                    <b>Player Cancels Section</b> (Branch during 3)
-                    <ol>
-                    <li>System returns to menu</li>
-                    </ol>
-                    </li>
-                </ol>
-            </td>
+            <td>None</td>
         </tr>
         <tr>
             <td align="right">Exceptions:</td>
-            <td>None</td>
+            <td>
+                <ol>
+                    <li><b>IOException</b> (Branch during 4)
+                        <ol>
+                            <li>System displays error message.</li>
+                            <li>Exit.</li>
+                        </ol>
+                    </li>
+                </ol>
+            </td>
         </tr>
         <tr>
             <td align="right">Includes:</td>
@@ -54,11 +54,11 @@
         </tr>
         <tr>
             <td align="right">Priority:</td>
-            <td>High</td>
+            <td>Low</td>
         </tr>
         <tr>
             <td align="right">Frequency of Use:</td>
-            <td>About 99% of application runs.</td>
+            <td>About 1% of users total.</td>
         </tr>
         <tr>
             <td align="right">Business Rules:</td>
@@ -74,7 +74,7 @@
         </tr>
         <tr>
             <td align="right">Notes and Issues:</td>
-            <td>All difficulties can be played at anytime</td>
+            <td>None</td>
         </tr>
     </tbody>
 </table>
