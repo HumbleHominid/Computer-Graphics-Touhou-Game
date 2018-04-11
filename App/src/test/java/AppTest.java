@@ -3,7 +3,7 @@ import static org.junit.Assert.*;
 
 public class AppTest {
     @Test
-    public void testAppHasAGreeting() {
+    public void testNotNull() {
         assertNotNull("App should not be null",
             new App());
     }

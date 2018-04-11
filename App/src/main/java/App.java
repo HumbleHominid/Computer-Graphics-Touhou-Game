@@ -20,6 +20,8 @@ public class App extends JFrame implements GLEventListener {
     private int _numRenderTimes = _renderTimes.length;
     // the amount of the next frame we covered in our update method
     private double _frameCovered = 0.0;
+    // the pool of danmakufu objects
+    private DanmakufuPool _danmakufuPool = new DanmakufuPool();
 
     public App() {
         // set the window title
@@ -95,6 +97,7 @@ public class App extends JFrame implements GLEventListener {
 
     public void update() {
         // TODO
+        _danmakufuPool.update();
     }
 
     /* ************************
@@ -111,9 +114,12 @@ public class App extends JFrame implements GLEventListener {
         // Clearing the canvas is important
         gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // print some text
-        TextRenderer textRenderer = new TextRenderer(new Font("Verdana",
-                Font.BOLD, 18));
+        // Print some text
+        // Make the font
+        Font font = new Font("Verdana", Font.BOLD, 18);
+
+        // Make the text renderer with the given font
+        TextRenderer textRenderer = new TextRenderer(font);
 
         textRenderer.beginRendering(glAD.getSurfaceWidth(),
                 glAD.getSurfaceHeight());
@@ -134,6 +140,9 @@ public class App extends JFrame implements GLEventListener {
         textRenderer.draw(String.format("%.02f ms",
                 totalTime / (double) _renderTimes.length), 0, 0);
         textRenderer.endRendering();
+
+        // Display the danmakufuPool
+        _danmakufuPool.render(_frameCovered);
     }
 
     /*
