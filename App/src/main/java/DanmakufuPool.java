@@ -1,4 +1,7 @@
-public class DanmakufuPool implements Drawable {
+import static com.jogamp.opengl.GL4.*;
+import com.jogamp.opengl.*;
+
+public class DanmakufuPool {
     private Danmakufu[] _pool;
 
     private Danmakufu _firstAvailable;
@@ -19,6 +22,7 @@ public class DanmakufuPool implements Drawable {
     private void fillPool() {
         _pool[_pool.length - 1] = new Danmakufu();
         _pool[_pool.length - 1].setNext(null);
+        _firstAvailable = _pool[_pool.length - 1];
 
         for (int i = _pool.length - 2; i >= 0; i--) {
             Danmakufu newDan = new Danmakufu();
@@ -31,28 +35,27 @@ public class DanmakufuPool implements Drawable {
     public void update() {
         for (int i = 0; i < _pool.length; i++) {
             Danmakufu danfu = _pool[i];
-            danfu.update();
 
-            if (!danfu.isInUse()) {
+            if (!danfu.update()) {
                 danfu.setNext(_firstAvailable);
                 _firstAvailable = danfu;
             }
         }
     }
 
-    public void render(double elapsed) {
-        // Don't forget to extrapolate the rendering
+    public void render(GLAutoDrawable glAD, double elapsed) {
         for (int i = 0; i < _pool.length; i++) {
-            _pool[i].render(elapsed);
+            _pool[i].render(glAD, elapsed);
         }
     }
 
-    public void addDanmakufu(double x, double y, double xVel, double yVel) {
+    public void addDanmakufu(double x, double y, double xVel, double yVel,
+            int lifetime) {
         assert(_firstAvailable != null);
 
         Danmakufu newDan = _firstAvailable;
         _firstAvailable = newDan.getNext();
 
-        newDan.init(x, y, xVel, yVel);
+        newDan.init(x, y, xVel, yVel, lifetime);
     }
 }
