@@ -2,27 +2,42 @@ import static com.jogamp.opengl.GL4.*;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.awt.TextRenderer;
+import com.jogamp.common.nio.Buffers;
 
 import java.awt.*;
 
 import javax.swing.*;
-
-import java.util.ArrayList;
+import java.nio.*;
 
 public class App extends JFrame implements GLEventListener {
     // Game tick set to 60 ticks per second
-    private final double MS_PER_UPDATE = 1000 / 60;
+    private final double NS_PER_UPDATE = 1000000000.0 / 60;
     private GLCanvas _myCanvas;
     // Frame tracking stuff
-    // list of the past N render times. for getting fps values
-    private ArrayList<Double> _renderTimes = new ArrayList<Double>();
-    // the amount of the next frame we covered in our update method
-    private double _frameCovered = 0.0;
+    // List of the past N render times. for getting fps values
+    private long[] _renderTimes = new long[50];
+    // Count of _renderTimes added. for looping
+    private int _numRenderTimes = _renderTimes.length;
+    // The amount of the next frame we covered in our update method
+    private double _elapsed = 0.0;
+    // The pool of danmakufu objects
+    private DanmakufuPool _danmakufuPool;
+    // The text renderer for rendering the framerate
+    private TextRenderer _renderer;
 
     public App() {
-        // Set the window properties
-        setTitle("Crappy Touhou Clone dot EXE");
-        setSize(800, 600);
+        // set the window title
+        setTitle("Crappy Touhou Clone.exe");
+        // set the window size
+        setSize(1600, 900);
+        // set window to fullscreen
+        // setExtendedState(JFrame.MAXIMIZED_BOTH);
+        // remove bar on top of window
+        // setUndecorated(true);
+        // disable window resize
+        setResizable(false);
+        // set window 'x' to close
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // Create new canvas
         _myCanvas = new GLCanvas();
@@ -37,40 +52,43 @@ public class App extends JFrame implements GLEventListener {
 
     /**
      * Main game loop function. updates the game according to the tickrate set
-     * by MS_PER_UPDATE. Will render the game as fast as it can.
+     * by NS_PER_UPDATE. Will render the game as fast as it can.
      */
     public void gameLoop() {
-        double current;
-        double elapsed;
+        long current; // nanoTime
+        long _renderTime; // ns since last frame
         double lag = 0.0;
-        double previous = System.currentTimeMillis();
+        long previous = System.nanoTime(); // nanoTime
 
         while (true) {
-            current = System.currentTimeMillis();
-            elapsed = current - previous;
-
-            lag = lag + elapsed;
+            current = System.nanoTime();
+            _renderTime = current - previous;
+            lag = lag + _renderTime;
             previous = current;
 
+            // process the input
             processInput();
 
             // keep updating the game while we are running at slow fps
-            while (lag >= MS_PER_UPDATE) {
+            while (lag >= NS_PER_UPDATE) {
                 update();
 
-                lag = lag - MS_PER_UPDATE;
+                lag = lag - NS_PER_UPDATE;
             }
 
             // Track the elapsed time for displaying fps purposes
-            _renderTimes.add(elapsed);
-
-            if (_renderTimes.size() > 10) {
-                _renderTimes.remove(0);
+            if (_numRenderTimes == _renderTimes.length) {
+                _numRenderTimes = 0;
             }
 
-            // set frameCovered. this is for extrapolating rendering
-            _frameCovered = lag / MS_PER_UPDATE;
+            _renderTimes[_numRenderTimes] = _renderTime;
 
+            _numRenderTimes++;
+
+            // set frameCovered. this is for extrapolating rendering
+            _elapsed = lag / NS_PER_UPDATE;
+
+            // tell the canvas to display all its listeners
             _myCanvas.display();
         }
     }
@@ -80,7 +98,7 @@ public class App extends JFrame implements GLEventListener {
     }
 
     public void update() {
-        // TODO
+        _danmakufuPool.update();
     }
 
     /* ************************
@@ -92,28 +110,35 @@ public class App extends JFrame implements GLEventListener {
      */
     @Override
     public void display(GLAutoDrawable glAD) {
-        GL4 gl = (GL4) GLContext.getCurrentGL();
+        GL4 gl = (GL4) glAD.getGL();
 
         // Clearing the canvas is important
-        gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT);
 
-        // print some text
-        TextRenderer textRenderer = new TextRenderer(new Font("Verdana", Font.BOLD, 18));
+        // Display the danmakufuPool
+        _danmakufuPool.render(glAD, _elapsed);
 
-        textRenderer.beginRendering(glAD.getSurfaceWidth(), glAD.getSurfaceHeight());
-        textRenderer.setColor(Color.YELLOW);
-        textRenderer.setSmoothing(true);
+        // Print some text
+        _renderer.beginRendering(glAD.getSurfaceWidth(),
+                glAD.getSurfaceHeight());
+        _renderer.setColor(Color.YELLOW);
+        _renderer.setSmoothing(true);
 
         // Get the sum of the render times in the list
         double totalTime = 0;
 
-        for (Double d : _renderTimes) {
-            totalTime = totalTime + d;
+        for (int i = 0; i < _renderTimes.length; i++) {
+            totalTime = totalTime + _renderTimes[i];
         }
 
+        // nanoTime to millis
+        totalTime = totalTime / 1000000.0;
+
         // Display the average of the render times
-        textRenderer.draw(String.format("%.01f ms", totalTime / _renderTimes.size()), 0, 0);
-        textRenderer.endRendering();
+        String frames = String.format("%.02f ms",
+                totalTime / (double) _renderTimes.length);
+        _renderer.draw(frames, 0, 0);
+        _renderer.endRendering();
     }
 
     /*
@@ -130,8 +155,22 @@ public class App extends JFrame implements GLEventListener {
      * @see com.jogamp.opengl.GLEventListener#init(com.jogamp.opengl.GLAutoDrawable)
      */
     @Override
-    public void init(GLAutoDrawable arg0) {
-        // TODO
+    public void init(GLAutoDrawable glAD) {
+        // Disable V-Sync. Bad for poopoo computers though
+        glAD.getGL().setSwapInterval(0);
+
+        // Create danmakufu pool
+        _danmakufuPool = new DanmakufuPool();
+
+        _danmakufuPool.addDanmakufu(0, 0, -0.001, 0, 150);
+        _danmakufuPool.addDanmakufu(0, 0, 0, 0.002, 200);
+        _danmakufuPool.addDanmakufu(0, 0, 0.001, 0.001, 250);
+
+        // Create text renderer
+        Font font = new Font("Verdana", Font.BOLD, 18);
+
+        // Make the text renderer with the given font
+        _renderer = new TextRenderer(font);
     }
 
     /*
@@ -139,7 +178,8 @@ public class App extends JFrame implements GLEventListener {
      * @see com.jogamp.opengl.GLEventListener#reshape(com.jogamp.opengl.GLAutoDrawable, int, int, int, int)
      */
     @Override
-    public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3, int arg4) {
+    public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3,
+            int arg4) {
         // TODO
     }
 
@@ -147,7 +187,6 @@ public class App extends JFrame implements GLEventListener {
      * main
      */
     public static void main(String[] args) {
-        App app = new App();
-        app.gameLoop();
+        new App().gameLoop();
     }
 }
