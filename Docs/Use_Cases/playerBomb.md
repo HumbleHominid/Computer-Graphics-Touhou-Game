@@ -6,28 +6,37 @@
         </tr>
         <tr>
             <td align="right">Description:</td>
-            <td>A player wants to restart a game run.</td>
+            <td>The player wants to fire a bomb.</td>
         </tr>
         <tr>
             <td align="right">Preconditions:</td>
-            <td>The application is running and paused.</td>
+            <td>The player is playing the game.</td>
         </tr>
         <tr>
             <td align="right">Postconditions:</td>
-            <td>The game has been restarted.</td>
+            <td>A bomb has been fired.</td>
         </tr>
         <tr>
             <td align="right">Normal Flow:</td>
             <td>
                 <ol>
-                    <li>Player indicates they want to restart a game run.</li>
-                    <li>System resets lives, power, and score to default. System starts the game from Stage 0 of the current difficulty.</li>
+                    <li>Player indicates they want to fire a bomb.</li>
+                    <li>System fires a bomb.</li>
                 </ol>
             </td>
         </tr>
         <tr>
             <td align="right">Alternative Flows:</td>
-            <td>None</td>
+            <td>
+                <ol>
+                    <li>
+                        <b>Not enough resources to fire a bomb</b> (Branch during 2)
+                        <ol>
+                            <li>Exit</li>
+                        </ol>
+                    </li>
+                </ol>
+            </td>
         </tr>
         <tr>
             <td align="right">Exceptions:</td>
@@ -47,7 +56,7 @@
         </tr>
         <tr>
             <td align="right">Frequency of Use:</td>
-            <td>About 100% of times the application is run..</td>
+            <td>Around 99% of game runs.</td>
         </tr>
         <tr>
             <td align="right">Business Rules:</td>
@@ -63,7 +72,7 @@
         </tr>
         <tr>
             <td align="right">Notes and Issues:</td>
-            <td>None</td>
+            <td>Note, this does not describe the resources needed to fire the bomb</td>
         </tr>
     </tbody>
 </table>

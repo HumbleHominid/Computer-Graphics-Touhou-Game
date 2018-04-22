@@ -256,77 +256,6 @@
     </tbody>
 </table>
 
-### Player Shoot
-<table>
-    <tbody>
-        <tr>
-            <td align="right">Actors:</td>
-            <td>Player</td>
-        </tr>
-        <tr>
-            <td align="right">Description:</td>
-            <td>The player wants to shoot a bullet</td>
-        </tr>
-        <tr>
-            <td align="right">Preconditions:</td>
-            <td>The game is being played</td>
-        </tr>
-        <tr>
-            <td align="right">Postconditions:</td>
-            <td>A bullet has been fired</td>
-        </tr>
-        <tr>
-            <td align="right">Normal Flow:</td>
-            <td>
-                <ol>
-                    <li>Player indicates they want to shoot a bullet</li>
-                    <li>System fires a bullet and enhancements according to the player's current power</li>
-                </ol>
-            </td>
-        </tr>
-        <tr>
-            <td align="right">Alternative Flows:</td>
-            <td>None</td>
-        </tr>
-        <tr>
-            <td align="right">Exceptions:</td>
-            <td>None</td>
-        </tr>
-        <tr>
-            <td align="right">Includes:</td>
-            <td>None</td>
-        </tr>
-        <tr>
-            <td align="right">Extends:</td>
-            <td>None</td>
-        </tr>
-        <tr>
-            <td align="right">Priority:</td>
-            <td>Medium</td>
-        </tr>
-        <tr>
-            <td align="right">Frequency of Use:</td>
-            <td>100% of the game runs</td>
-        </tr>
-        <tr>
-            <td align="right">Business Rules:</td>
-            <td>None</td>
-        </tr>
-        <tr>
-            <td align="right">Special Requirements:</td>
-            <td>None</td>
-        </tr>
-        <tr>
-            <td align="right">Assumptions:</td>
-            <td>None</td>
-        </tr>
-        <tr>
-            <td align="right">Notes and Issues:</td>
-            <td>This does not specify if the player can hold a shoot button for continuous fire. This also does not describe the enhanced effects that will take place when a bullet is fired</td>
-        </tr>
-    </tbody>
-</table>
-
 ### View High Scores
 <table>
     <tbody>
@@ -400,6 +329,238 @@
     </tbody>
 </table>
 
+### Player Move
+<table>
+    <tbody>
+        <tr>
+            <td align="right">Actors:</td>
+            <td>Player</td>
+        </tr>
+        <tr>
+            <td align="right">Description:</td>
+            <td>The Player wants move.</td>
+        </tr>
+        <tr>
+            <td align="right">Preconditions:</td>
+            <td>The player is playing the game.</td>
+        </tr>
+        <tr>
+            <td align="right">Postconditions:</td>
+            <td>The player has been moved.</td>
+        </tr>
+        <tr>
+            <td align="right">Normal Flow:</td>
+            <td>
+                <ol>
+                    <li>Player indicates they want to move in one of the cardinal directions.</li>
+                    <li>System updates the Player's movement vector.</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">Alternative Flows:</td>
+            <td>
+                <ol>
+                    <li>
+                        <b>Slow Move</b> (Branch during 1)
+                        <ol>
+                            <li>Player indicates they want to move in one of the cardinal directions while indicating they want to slow move.</li>
+                            <li>Return to 2</li>
+                        </ol>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">Exceptions:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Includes:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Extends:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Priority:</td>
+            <td>High</td>
+        </tr>
+        <tr>
+            <td align="right">Frequency of Use:</td>
+            <td>Around 100% of the game runs.</td>
+        </tr>
+        <tr>
+            <td align="right">Business Rules:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Special Requirements:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Assumptions:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Notes and Issues:</td>
+            <td>None</td>
+        </tr>
+    </tbody>
+</table>
+
+### Player Shoot
+<table>
+    <tbody>
+        <tr>
+            <td align="right">Actors:</td>
+            <td>Player</td>
+        </tr>
+        <tr>
+            <td align="right">Description:</td>
+            <td>The player wants to shoot a bullet</td>
+        </tr>
+        <tr>
+            <td align="right">Preconditions:</td>
+            <td>The game is being played</td>
+        </tr>
+        <tr>
+            <td align="right">Postconditions:</td>
+            <td>A bullet has been fired</td>
+        </tr>
+        <tr>
+            <td align="right">Normal Flow:</td>
+            <td>
+                <ol>
+                    <li>Player indicates they want to shoot a bullet</li>
+                    <li>System fires a bullet and enhancements according to the player's current power</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">Alternative Flows:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Exceptions:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Includes:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Extends:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Priority:</td>
+            <td>Medium</td>
+        </tr>
+        <tr>
+            <td align="right">Frequency of Use:</td>
+            <td>100% of the game runs</td>
+        </tr>
+        <tr>
+            <td align="right">Business Rules:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Special Requirements:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Assumptions:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Notes and Issues:</td>
+            <td>This does not specify if the player can hold a shoot button for continuous fire. This also does not describe the enhanced effects that will take place when a bullet is fired</td>
+        </tr>
+    </tbody>
+</table>
+
+### Player Bomb
+<table>
+    <tbody>
+        <tr>
+            <td align="right">Actors:</td>
+            <td>Player</td>
+        </tr>
+        <tr>
+            <td align="right">Description:</td>
+            <td>The player wants to fire a bomb.</td>
+        </tr>
+        <tr>
+            <td align="right">Preconditions:</td>
+            <td>The player is playing the game.</td>
+        </tr>
+        <tr>
+            <td align="right">Postconditions:</td>
+            <td>A bomb has been fired.</td>
+        </tr>
+        <tr>
+            <td align="right">Normal Flow:</td>
+            <td>
+                <ol>
+                    <li>Player indicates they want to fire a bomb.</li>
+                    <li>System fires a bomb.</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">Alternative Flows:</td>
+            <td>
+                <ol>
+                    <li>
+                        <b>Not enough resources to fire a bomb</b> (Branch during 2)
+                        <ol>
+                            <li>Exit</li>
+                        </ol>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">Exceptions:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Includes:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Extends:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Priority:</td>
+            <td>Medium</td>
+        </tr>
+        <tr>
+            <td align="right">Frequency of Use:</td>
+            <td>Around 99% of game runs.</td>
+        </tr>
+        <tr>
+            <td align="right">Business Rules:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Special Requirements:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Assumptions:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Notes and Issues:</td>
+            <td>Note, this does not describe the resources needed to fire the bomb</td>
+        </tr>
+    </tbody>
+</table>
+
 ### Restart Run
 <table>
     <tbody>
@@ -450,7 +611,7 @@
         </tr>
         <tr>
             <td align="right">Frequency of Use:</td>
-            <td>About 100% of times the applicaiton is run..</td>
+            <td>About 100% of times the application is run..</td>
         </tr>
         <tr>
             <td align="right">Business Rules:</td>
@@ -467,6 +628,87 @@
         <tr>
             <td align="right">Notes and Issues:</td>
             <td>None</td>
+        </tr>
+    </tbody>
+</table>
+
+### Skip Dialog
+<table>
+    <tbody>
+        <tr>
+            <td align="right">Actors:</td>
+            <td>Player</td>
+        </tr>
+        <tr>
+            <td align="right">Description:</td>
+            <td>The player wants to skip dialog.</td>
+        </tr>
+        <tr>
+            <td align="right">Preconditions:</td>
+            <td>The player is playing the game and is in a dialog scene.</td>
+        </tr>
+        <tr>
+            <td align="right">Postconditions:</td>
+            <td>Part of the dialog has been skipped.</td>
+        </tr>
+        <tr>
+            <td align="right">Normal Flow:</td>
+            <td>
+                <ol>
+                    <li>Player indicates they want to skip dialog.</li>
+                    <li>System progress to next dialog block.</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">Alternative Flows:</td>
+            <td>
+                <ol>
+                    <li>
+                        <b>No next dialog block</b> (Branch during 2)
+                        <ol>
+                            <li>System exits dialog scene.</li>
+                            <li>Exit</li>
+                        </ol>
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">Exceptions:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Includes:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Extends:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Priority:</td>
+            <td>Low</td>
+        </tr>
+        <tr>
+            <td align="right">Frequency of Use:</td>
+            <td>About 100% of time a dialog scene is reached.</td>
+        </tr>
+        <tr>
+            <td align="right">Business Rules:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Special Requirements:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Assumptions:</td>
+            <td>None</td>
+        </tr>
+        <tr>
+            <td align="right">Notes and Issues:</td>
+            <td>Note this skips a part of he dialog scene, not the whole scene.</td>
         </tr>
     </tbody>
 </table>

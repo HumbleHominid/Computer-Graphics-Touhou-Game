@@ -6,28 +6,38 @@
         </tr>
         <tr>
             <td align="right">Description:</td>
-            <td>A player wants to restart a game run.</td>
+            <td>The Player wants move.</td>
         </tr>
         <tr>
             <td align="right">Preconditions:</td>
-            <td>The application is running and paused.</td>
+            <td>The player is playing the game.</td>
         </tr>
         <tr>
             <td align="right">Postconditions:</td>
-            <td>The game has been restarted.</td>
+            <td>The player has been moved.</td>
         </tr>
         <tr>
             <td align="right">Normal Flow:</td>
             <td>
                 <ol>
-                    <li>Player indicates they want to restart a game run.</li>
-                    <li>System resets lives, power, and score to default. System starts the game from Stage 0 of the current difficulty.</li>
+                    <li>Player indicates they want to move in one of the cardinal directions.</li>
+                    <li>System updates the Player's movement vector.</li>
                 </ol>
             </td>
         </tr>
         <tr>
             <td align="right">Alternative Flows:</td>
-            <td>None</td>
+            <td>
+                <ol>
+                    <li>
+                        <b>Slow Move</b> (Branch during 1)
+                        <ol>
+                            <li>Player indicates they want to move in one of the cardinal directions while indicating they want to slow move.</li>
+                            <li>Return to 2</li>
+                        </ol>
+                    </li>
+                </ol>
+            </td>
         </tr>
         <tr>
             <td align="right">Exceptions:</td>
@@ -43,11 +53,11 @@
         </tr>
         <tr>
             <td align="right">Priority:</td>
-            <td>Medium</td>
+            <td>High</td>
         </tr>
         <tr>
             <td align="right">Frequency of Use:</td>
-            <td>About 100% of times the application is run..</td>
+            <td>Around 100% of the game runs.</td>
         </tr>
         <tr>
             <td align="right">Business Rules:</td>

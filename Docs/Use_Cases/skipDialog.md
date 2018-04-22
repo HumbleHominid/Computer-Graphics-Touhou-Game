@@ -6,28 +6,38 @@
         </tr>
         <tr>
             <td align="right">Description:</td>
-            <td>A player wants to restart a game run.</td>
+            <td>The player wants to skip dialog.</td>
         </tr>
         <tr>
             <td align="right">Preconditions:</td>
-            <td>The application is running and paused.</td>
+            <td>The player is playing the game and is in a dialog scene.</td>
         </tr>
         <tr>
             <td align="right">Postconditions:</td>
-            <td>The game has been restarted.</td>
+            <td>Part of the dialog has been skipped.</td>
         </tr>
         <tr>
             <td align="right">Normal Flow:</td>
             <td>
                 <ol>
-                    <li>Player indicates they want to restart a game run.</li>
-                    <li>System resets lives, power, and score to default. System starts the game from Stage 0 of the current difficulty.</li>
+                    <li>Player indicates they want to skip dialog.</li>
+                    <li>System progress to next dialog block.</li>
                 </ol>
             </td>
         </tr>
         <tr>
             <td align="right">Alternative Flows:</td>
-            <td>None</td>
+            <td>
+                <ol>
+                    <li>
+                        <b>No next dialog block</b> (Branch during 2)
+                        <ol>
+                            <li>System exits dialog scene.</li>
+                            <li>Exit</li>
+                        </ol>
+                    </li>
+                </ol>
+            </td>
         </tr>
         <tr>
             <td align="right">Exceptions:</td>
@@ -43,11 +53,11 @@
         </tr>
         <tr>
             <td align="right">Priority:</td>
-            <td>Medium</td>
+            <td>Low</td>
         </tr>
         <tr>
             <td align="right">Frequency of Use:</td>
-            <td>About 100% of times the application is run..</td>
+            <td>About 100% of time a dialog scene is reached.</td>
         </tr>
         <tr>
             <td align="right">Business Rules:</td>
@@ -63,7 +73,7 @@
         </tr>
         <tr>
             <td align="right">Notes and Issues:</td>
-            <td>None</td>
+            <td>Note this skips a part of he dialog scene, not the whole scene.</td>
         </tr>
     </tbody>
 </table>
