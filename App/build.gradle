@@ -24,6 +24,8 @@ dependencies {
     // Use JUnit test framework
     testCompile 'junit:junit:4.12'
 
+    compile files("libs/graphicslib3D.jar")
+
     // Gotten from https://github.com/bensmith87/jogl_gradle/blob/master/build.gradle
     compile "org.jogamp.gluegen:gluegen-rt:2.3.2"
     compile "org.jogamp.jogl:jogl-all:2.3.2"

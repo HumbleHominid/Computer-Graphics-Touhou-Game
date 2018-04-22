@@ -5,6 +5,9 @@ public class DanmakufuPool {
     private Danmakufu[] _pool;
 
     private Danmakufu _firstAvailable;
+    // Delet
+    private DanmakufuModel dm = new DanmakufuModel("assets/GLSL/vertex/dan.shader",
+            "assets/GLSL/fragment/dan.shader", "assets/images/pill_danmakufu.png");
 
     public DanmakufuPool() {
         _pool = new Danmakufu[2000];
@@ -17,6 +20,10 @@ public class DanmakufuPool {
         _pool = new Danmakufu[size];
 
         fillPool();
+    }
+
+    public int getPoolSize() {
+        return _pool.length;
     }
 
     private void fillPool() {
@@ -51,11 +58,13 @@ public class DanmakufuPool {
 
     public void addDanmakufu(double x, double y, double xVel, double yVel,
             int lifetime) {
-        assert(_firstAvailable != null);
+        if (_firstAvailable == null) {
+            return;
+        }
 
         Danmakufu newDan = _firstAvailable;
         _firstAvailable = newDan.getNext();
 
-        newDan.init(x, y, xVel, yVel, lifetime);
+        newDan.init(x, y, xVel, yVel, lifetime, dm);
     }
 }

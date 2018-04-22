@@ -9,6 +9,8 @@ import java.awt.*;
 import javax.swing.*;
 import java.nio.*;
 
+import java.util.Random;
+
 public class App extends JFrame implements GLEventListener {
     // Game tick set to 60 ticks per second
     private final double NS_PER_UPDATE = 1000000000.0 / 60;
@@ -22,8 +24,6 @@ public class App extends JFrame implements GLEventListener {
     private double _elapsed = 0.0;
     // The pool of danmakufu objects
     private DanmakufuPool _danmakufuPool;
-    // The text renderer for rendering the framerate
-    private TextRenderer _renderer;
 
     public App() {
         // set the window title
@@ -93,10 +93,12 @@ public class App extends JFrame implements GLEventListener {
         }
     }
 
+    // User Interaction (10)
     public void processInput() {
         // TODO
     }
 
+    // Physics (10) and Collision (10) I guess idk
     public void update() {
         _danmakufuPool.update();
     }
@@ -110,35 +112,28 @@ public class App extends JFrame implements GLEventListener {
      */
     @Override
     public void display(GLAutoDrawable glAD) {
+        clearCanvas(glAD);
+
+        drawBackground(glAD);
+
+        // Display the danmakufuPool
+        _danmakufuPool.render(glAD, _elapsed);
+    }
+
+    private void clearCanvas(GLAutoDrawable glAD) {
         GL4 gl = (GL4) glAD.getGL();
 
         // Clearing the canvas is important
         gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT);
+    }
 
-        // Display the danmakufuPool
-        _danmakufuPool.render(glAD, _elapsed);
+    private void drawBackground(GLAutoDrawable glAD) {
+        GL4 gl = (GL4) glAD.getGL();
 
-        // Print some text
-        _renderer.beginRendering(glAD.getSurfaceWidth(),
-                glAD.getSurfaceHeight());
-        _renderer.setColor(Color.YELLOW);
-        _renderer.setSmoothing(true);
-
-        // Get the sum of the render times in the list
-        double totalTime = 0;
-
-        for (int i = 0; i < _renderTimes.length; i++) {
-            totalTime = totalTime + _renderTimes[i];
-        }
-
-        // nanoTime to millis
-        totalTime = totalTime / 1000000.0;
-
-        // Display the average of the render times
-        String frames = String.format("%.02f ms",
-                totalTime / (double) _renderTimes.length);
-        _renderer.draw(frames, 0, 0);
-        _renderer.endRendering();
+        // Draw the Background
+        float[] bkg = { 0.1f, 0.1f, 0.1f, 1.0f };
+        FloatBuffer buff = Buffers.newDirectFloatBuffer(bkg);
+        gl.glClearBufferfv(GL_COLOR, 0, buff);
     }
 
     /*
@@ -162,15 +157,19 @@ public class App extends JFrame implements GLEventListener {
         // Create danmakufu pool
         _danmakufuPool = new DanmakufuPool();
 
-        _danmakufuPool.addDanmakufu(0, 0, -0.001, 0, 150);
-        _danmakufuPool.addDanmakufu(0, 0, 0, 0.002, 200);
-        _danmakufuPool.addDanmakufu(0, 0, 0.001, 0.001, 250);
+        // _danmakufuPool.addDanmakufu(0, 0, 0.0, 0.0, 1000);
 
-        // Create text renderer
-        Font font = new Font("Verdana", Font.BOLD, 18);
+        Random rand = new Random(System.currentTimeMillis());
 
-        // Make the text renderer with the given font
-        _renderer = new TextRenderer(font);
+        for (int i = 0; i < _danmakufuPool.getPoolSize(); i++) {
+            double x = rand.nextDouble() * 2 - 1;
+            double y = rand.nextDouble() * 2 - 1;
+            double xVel = rand.nextDouble() / 1000 * (rand.nextInt() % 2 == 0 ? 1 : -1);
+            double yVel = rand.nextDouble() / 100 * -1;
+            int lifetime = rand.nextInt() % 1000;
+
+            _danmakufuPool.addDanmakufu(x, y, xVel, yVel, lifetime);
+        }
     }
 
     /*
