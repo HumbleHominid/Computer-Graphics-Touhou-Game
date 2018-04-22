@@ -1,31 +1,23 @@
+import graphicslib3D.*;
+
 import static com.jogamp.opengl.GL4.*;
 import com.jogamp.opengl.*;
-import com.jogamp.opengl.GLContext;
-import com.jogamp.common.nio.Buffers;
-
-import java.io.*;
+import com.jogamp.opengl.util.texture.*;
 
 public class Danmakufu {
     // positions
     private double _x, _y;
-
     // velocities
     private double _xVel, _yVel;
-
     // lifetime in update cycles
-    private int _lifetime = 0;
-
-    // the next Danmakufu in the list
+    private int _lifetime;
+    // The next danmakufu in the list
     private Danmakufu _next;
+    // The Danmakufu model that should be used for this Danmakufu
+    private DanmakufuModel _model;
 
-    // Pointer do the rendering program being used
-    private int _renderingProgram;
-
-    public Danmakufu() {
-        _renderingProgram = createShaderProgram();
-    }
-
-    public void init(double x, double y, double xVel, double yVel, int lifetime) {
+    public void init(double x, double y, double xVel, double yVel,
+            int lifetime, DanmakufuModel dm) {
         // Positions
         _x = x;
         _y = y;
@@ -36,9 +28,11 @@ public class Danmakufu {
 
         // Lifetime
         _lifetime = lifetime;
+
+        // Model
+        _model = dm;
     }
 
-    // Clear references to other object when marking not in use if necessary
     public boolean update() {
         // Return if update was called on a Danmakufu that is not in use
         if (!isInUse()) {
@@ -62,16 +56,38 @@ public class Danmakufu {
 
         GL4 gl = (GL4) glAD.getGL();
 
-        gl.glUseProgram(_renderingProgram);
+        gl.glUseProgram(_model.getRenderingProgram());
 
-        int x = gl.glGetUniformLocation(_renderingProgram, "x");
-        int y = gl.glGetUniformLocation(_renderingProgram, "y");
+        // Make the translation matrix
+        Matrix3D mMat = new Matrix3D();
+        mMat.translate(_x + _xVel * elapsed, _y + _yVel * elapsed, 0.0);
+        mMat.scale(0.007, 0.02, 0.0);
+
+        int mv_loc = gl.glGetUniformLocation(_model.getRenderingProgram(),
+                "mv_matrix");
 
         // Predict where the object should be between update calls
-        gl.glProgramUniform1f(_renderingProgram, x, (float) (_x + _xVel * elapsed));
-        gl.glProgramUniform1f(_renderingProgram, y, (float) (_y + _yVel * elapsed));
+        gl.glUniformMatrix4fv(mv_loc, 1, false, mMat.getFloatValues(), 0);
 
-        gl.glDrawArrays(GL_TRIANGLES, 0, 3);
+        // set up arrays to draw
+        gl.glBindBuffer(GL_ARRAY_BUFFER, _model.getVBO()[0]);
+        gl.glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+        gl.glEnableVertexAttribArray(0);
+
+        gl.glBindBuffer(GL_ARRAY_BUFFER, _model.getVBO()[1]);
+        gl.glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
+        gl.glEnableVertexAttribArray(1);
+
+        // Blend the pixels
+        gl.glEnable(GL_BLEND);
+        gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        gl.glBlendEquation(GL_FUNC_ADD);
+
+        // activate the textures
+        gl.glActiveTexture(GL_TEXTURE0);
+        gl.glBindTexture(GL_TEXTURE_2D, _model.getTexture().getTextureObject());
+
+        gl.glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 
     public boolean isInUse() {
@@ -84,63 +100,5 @@ public class Danmakufu {
 
     public void setNext(Danmakufu next) {
         _next = next;
-    }
-
-    // These need to be pulled out later
-    private int createShaderProgram() {
-        GL4 gl = (GL4) GLContext.getCurrentGL();
-
-        String vshaderSource[] = readShaderSource("assets/GLSL/vertex/tri.shader");
-        String fshaderSource[] = readShaderSource("assets/GLSL/fragment/tri.shader");
-
-        int lengths[];
-
-        int vShader = gl.glCreateShader(GL_VERTEX_SHADER);
-        int fShader = gl.glCreateShader(GL_FRAGMENT_SHADER);
-
-        gl.glShaderSource(vShader, vshaderSource.length, vshaderSource, null, 0);
-        gl.glShaderSource(fShader, fshaderSource.length, fshaderSource, null, 0);
-
-        gl.glCompileShader(vShader);
-        gl.glCompileShader(fShader);
-
-        int vfprogram = gl.glCreateProgram();
-
-        gl.glAttachShader(vfprogram, vShader);
-        gl.glAttachShader(vfprogram, fShader);
-        gl.glLinkProgram(vfprogram);
-
-        return vfprogram;
-    }
-
-    // These need to be pulled out later
-    private String[] readShaderSource(String filename) {
-        String lines[];
-
-        try {
-            FileReader fr = new FileReader(filename);
-            BufferedReader br = new BufferedReader(fr);
-
-            // Lambdas are the best
-            lines = br.lines().toArray(String[]::new);
-
-            for (int i = 0; i < lines.length; i++) {
-                lines[i] = lines[i] + "\n";
-            }
-
-            br.close();
-        }
-        catch (FileNotFoundException e) {
-            System.out.println("Failed to find fragment shader file.");
-
-            return null;
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-
-            return null;
-        }
-
-        return lines;
     }
 }
