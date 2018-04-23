@@ -45,24 +45,24 @@ public class DanmakufuModel {
 
         float[] vertex_positions = {
             // Top Triangle
-            -1.0f, 1.0f, 1.0f,
-            1.0f, -1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
+            -1.0f, 4.0f, 1.0f, // Top Left
+            1.0f, -4.0f, 1.0f, // Bottom Right
+            1.0f, 4.0f, 1.0f,  // Top Right
             // Bottom Triangle
-            -1.0f, 1.0f, 1.0f,
-            1.0f, -1.0f, 1.0f,
-            -1.0f, -1.0f, 1.0f
+            -1.0f, 4.0f, 1.0f, // Top Left
+            1.0f, -4.0f, 1.0f, // Bottom Right
+            -1.0f, -4.0f, 1.0f // Bottom Left
         };
 
         float[] texture_coordinates = {
             // Top Triangle
-            0.0f, 1.0f,
-            1.0f, 0.0f,
-            1.0f, 1.0f,
+            0.0f, 1.0f, // Top Left
+            1.0f, 0.0f, // Bottom Right
+            1.0f, 1.0f, // Top Right
             // Bottom Triangle
-            0.0f, 1.0f,
-            1.0f, 0.0f,
-            0.0f, 0.0f
+            0.0f, 1.0f, // Top Left
+            1.0f, 0.0f, // Bottom Right
+            0.0f, 0.0f  // Bottom Left
         };
 
         gl.glGenVertexArrays(_vao.length, _vao, 0);

@@ -49,7 +49,7 @@ public class Danmakufu {
         return _lifetime < 1;
     }
 
-    public void render(GLAutoDrawable glAD, double elapsed) {
+    public void render(GLAutoDrawable glAD, double elapsed, Matrix3D pMat) {
         if (!isInUse()) {
             return;
         }
@@ -58,18 +58,41 @@ public class Danmakufu {
 
         gl.glUseProgram(_model.getRenderingProgram());
 
-        // Make the translation matrix
+        // Make the model matrix
         Matrix3D mMat = new Matrix3D();
+
+        // rotate
+        double rotAmt = 0.0f;
+
+        if (_xVel == 0.0) {
+            rotAmt = _yVel < 0 ? 90.0f : 0.0f;
+        }
+        else if (_yVel == 0.0) {
+            rotAmt = _xVel < 0 ? 45.0f : 135.0f;
+        }
+        else {
+            // This is stupid. Have to change [ -180, 180 ] to [ -90, 90 ] and
+            //  north orientation to right orientation
+            rotAmt = (Math.toDegrees(Math.atan2(_yVel, _xVel)) -90.0f) / 2.0f;
+        }
+System.out.printf("%f%n", rotAmt);
+        mMat.rotateZ(rotAmt);
+
+        // translate
         mMat.translate(_x + _xVel * elapsed, _y + _yVel * elapsed, 0.0);
-        mMat.scale(0.007, 0.02, 0.0);
+        // scale
+        mMat.scale(0.5, 0.5, 0.0);
 
-        int mv_loc = gl.glGetUniformLocation(_model.getRenderingProgram(),
+        int m_loc = gl.glGetUniformLocation(_model.getRenderingProgram(),
                 "mv_matrix");
+        int p_loc = gl.glGetUniformLocation(_model.getRenderingProgram(),
+                "p_matrix");
 
-        // Predict where the object should be between update calls
-        gl.glUniformMatrix4fv(mv_loc, 1, false, mMat.getFloatValues(), 0);
+        // Bind matricies
+        gl.glUniformMatrix4fv(m_loc, 1, false, mMat.getFloatValues(), 0);
+        gl.glUniformMatrix4fv(p_loc, 1, false, mMat.getFloatValues(), 0);
 
-        // set up arrays to draw
+        // Set up arrays to draw
         gl.glBindBuffer(GL_ARRAY_BUFFER, _model.getVBO()[0]);
         gl.glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
         gl.glEnableVertexAttribArray(0);

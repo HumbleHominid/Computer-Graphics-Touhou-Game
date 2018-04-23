@@ -1,3 +1,5 @@
+import graphicslib3D.*;
+
 import static com.jogamp.opengl.GL4.*;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
@@ -5,9 +7,9 @@ import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.common.nio.Buffers;
 
 import java.awt.*;
+import java.nio.*;
 
 import javax.swing.*;
-import java.nio.*;
 
 import java.util.Random;
 
@@ -93,12 +95,12 @@ public class App extends JFrame implements GLEventListener {
         }
     }
 
-    // User Interaction (10)
+    // User Interaction
     public void processInput() {
         // TODO
     }
 
-    // Physics (10) and Collision (10) I guess idk
+    // Physics and Collision I guess idk
     public void update() {
         _danmakufuPool.update();
     }
@@ -117,7 +119,7 @@ public class App extends JFrame implements GLEventListener {
         drawBackground(glAD);
 
         // Display the danmakufuPool
-        _danmakufuPool.render(glAD, _elapsed);
+        _danmakufuPool.render(glAD, _elapsed, perspective());
     }
 
     private void clearCanvas(GLAutoDrawable glAD) {
@@ -157,18 +159,21 @@ public class App extends JFrame implements GLEventListener {
         // Create danmakufu pool
         _danmakufuPool = new DanmakufuPool();
 
-        // _danmakufuPool.addDanmakufu(0, 0, 0.0, 0.0, 1000);
+        if (true) {
+            _danmakufuPool.addDanmakufu(0, 0, -0.001, 0.001, 1000);
+        }
+        else {
+            Random rand = new Random(System.currentTimeMillis());
 
-        Random rand = new Random(System.currentTimeMillis());
+            for (int i = 0; i < _danmakufuPool.getPoolSize(); i++) {
+                double x = rand.nextDouble() * 2 - 1;
+                double y = rand.nextDouble() * 2 - 1;
+                double xVel = rand.nextDouble() / 1000 * (rand.nextInt() % 2 == 0 ? 1 : -1);
+                double yVel = rand.nextDouble() / 1000 * (rand.nextInt() % 2 == 0 ? 1 : -1);
+                int lifetime = rand.nextInt() % 1000;
 
-        for (int i = 0; i < _danmakufuPool.getPoolSize(); i++) {
-            double x = rand.nextDouble() * 2 - 1;
-            double y = rand.nextDouble() * 2 - 1;
-            double xVel = rand.nextDouble() / 1000 * (rand.nextInt() % 2 == 0 ? 1 : -1);
-            double yVel = rand.nextDouble() / 100 * -1;
-            int lifetime = rand.nextInt() % 1000;
-
-            _danmakufuPool.addDanmakufu(x, y, xVel, yVel, lifetime);
+                _danmakufuPool.addDanmakufu(x, y, xVel, yVel, lifetime);
+            }
         }
     }
 
@@ -181,6 +186,36 @@ public class App extends JFrame implements GLEventListener {
             int arg4) {
         // TODO
     }
+
+    // Defines an orthographic perspective
+    private Matrix3D perspective() {
+        Matrix3D perspective = new Matrix3D();
+
+        float canvasWidth = (float) _myCanvas.getWidth();
+        float canvasHeight = (float) _myCanvas.getHeight();
+
+        // bounds
+        float top = canvasHeight, right = canvasWidth, bot = -canvasHeight,
+                left = -canvasHeight;
+        // clipping
+        float near = -1.0f, far = 1.0f;
+        // vars
+        float width = right - left;
+        float height = top - bot;
+        float clipDiff = far - near;
+
+        // viewport x
+        perspective.setElementAt(0, 0, 2.0f / width);
+        perspective.setElementAt(0, 3, -1.0f * ((right + left) / width));
+        // viewport y
+        perspective.setElementAt(1, 1, 2.0f / height);
+        perspective.setElementAt(1, 3, -1.0f * ((top + bot) / height));
+        // viewport z
+        perspective.setElementAt(2, 2, 1.0f / clipDiff);
+        perspective.setElementAt(2, 3, -1.0f * (near / clipDiff));
+
+        return perspective;
+  }
 
     /*
      * main

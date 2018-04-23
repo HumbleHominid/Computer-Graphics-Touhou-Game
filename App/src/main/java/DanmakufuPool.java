@@ -1,3 +1,5 @@
+import graphicslib3D.*;
+
 import static com.jogamp.opengl.GL4.*;
 import com.jogamp.opengl.*;
 
@@ -50,9 +52,9 @@ public class DanmakufuPool {
         }
     }
 
-    public void render(GLAutoDrawable glAD, double elapsed) {
+    public void render(GLAutoDrawable glAD, double elapsed, Matrix3D pMat) {
         for (int i = 0; i < _pool.length; i++) {
-            _pool[i].render(glAD, elapsed);
+            _pool[i].render(glAD, elapsed, pMat);
         }
     }
 
