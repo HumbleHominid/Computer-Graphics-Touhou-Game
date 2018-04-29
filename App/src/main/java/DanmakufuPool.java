@@ -4,14 +4,37 @@ import static com.jogamp.opengl.GL4.*;
 import com.jogamp.opengl.*;
 
 public class DanmakufuPool {
+    String _vertShader = "assets/GLSL/vertex/dan.shader";
+    String _fragShader = "assets/GLSL/fragment/dan.shader";
+    // enum of all the danmakufs
+    public enum ModelList {
+        CIRCLE("circle.png"),
+        ARROW("arrow.png"),
+        PINK_CIRCLE("pink_circle.png");
+
+        private DanmakufuModel _model;
+
+        private ModelList(String tex) {
+            _model = new DanmakufuModel("assets/GLSL/vertex/dan.shader",
+                    "assets/GLSL/fragment/dan.shader", "assets/images/" + tex,
+                    30.0f);
+        }
+
+        public DanmakufuModel getModel() {
+            return _model;
+        }
+    }
+
+    // make the enum public
+    public ModelList modelList;
+
     private Danmakufu[] _pool;
 
+    // fist free danmakufu in the list
     private Danmakufu _firstAvailable;
-    // Delet
-    private DanmakufuModel dm = new DanmakufuModel("assets/GLSL/vertex/dan.shader",
-            "assets/GLSL/fragment/dan.shader", "assets/images/hitcircle.png");
 
     public DanmakufuPool() {
+
         _pool = new Danmakufu[2000];
 
         fillPool();
@@ -59,14 +82,14 @@ public class DanmakufuPool {
     }
 
     public void addDanmakufu(double x, double y, double xVel, double yVel,
-            int lifetime) {
-        if (_firstAvailable == null) {
+            int lifetime, DanmakufuModel model) {
+        if (_firstAvailable == null || model == null) {
             return;
         }
 
         Danmakufu newDan = _firstAvailable;
         _firstAvailable = newDan.getNext();
 
-        newDan.init(x, y, xVel, yVel, lifetime, dm);
+        newDan.init(x, y, xVel, yVel, lifetime, model);
     }
 }

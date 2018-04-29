@@ -66,9 +66,7 @@ public class Danmakufu {
         mMat.translate(_x + _xVel * elapsed, _y + _yVel * elapsed, 0.0f);
 
         // scale
-        float s = 30.0f;
-
-        mMat.scale(s, s, 0.0f);
+        mMat.scale(_model.getScale(), _model.getScale(), 0.0f);
 
         // rotate
         double rotAmt = 0.0f;

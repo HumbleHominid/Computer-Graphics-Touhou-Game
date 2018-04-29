@@ -16,9 +16,11 @@ public class DanmakufuModel {
     private int[] _vbo = new int[2];
     // Reference to texture
     private Texture _texture;
+    private float _scale;
 
     public DanmakufuModel(String vertShaderPath, String fragShaderPath,
-            String texturePath) {
+            String texturePath, float scale) {
+        _scale = scale;
         _renderingProgram = createShaderProgram(vertShaderPath, fragShaderPath);
         _texture = loadTexture(texturePath);
         setupVertices();
@@ -38,6 +40,10 @@ public class DanmakufuModel {
 
     public final Texture getTexture() {
         return _texture;
+    }
+
+    public final float getScale() {
+        return _scale;
     }
 
     private void setupVertices() {
