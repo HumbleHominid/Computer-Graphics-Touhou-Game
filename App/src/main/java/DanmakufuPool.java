@@ -27,13 +27,13 @@ public class DanmakufuPool {
     // make the enum public
     public ModelList modelList;
 
+    // Container
     private Danmakufu[] _pool;
 
-    // fist free danmakufu in the list
+    // First free danmakufu in the list
     private Danmakufu _firstAvailable;
 
     public DanmakufuPool() {
-
         _pool = new Danmakufu[2000];
 
         fillPool();
@@ -55,7 +55,7 @@ public class DanmakufuPool {
         _pool[_pool.length - 1].setNext(null);
         _firstAvailable = _pool[_pool.length - 1];
 
-        // itterating down since they all have to be linked to eachother
+        // iterating down since they all have to be linked to each other
         for (int i = _pool.length - 2; i >= 0; i--) {
             Danmakufu newDan = new Danmakufu();
 
