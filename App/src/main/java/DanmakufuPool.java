@@ -4,8 +4,6 @@ import static com.jogamp.opengl.GL4.*;
 import com.jogamp.opengl.*;
 
 public class DanmakufuPool {
-    String _vertShader = "assets/GLSL/vertex/dan.shader";
-    String _fragShader = "assets/GLSL/fragment/dan.shader";
     // enum of all the danmakufs
     public enum ModelList {
         CIRCLE("circle.png"),
@@ -56,6 +54,7 @@ public class DanmakufuPool {
         _pool[_pool.length - 1].setNext(null);
         _firstAvailable = _pool[_pool.length - 1];
 
+        // itterating down since they all have to be linked to eachother
         for (int i = _pool.length - 2; i >= 0; i--) {
             Danmakufu newDan = new Danmakufu();
 

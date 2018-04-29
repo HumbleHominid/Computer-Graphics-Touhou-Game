@@ -174,7 +174,7 @@ public class App extends JFrame implements GLEventListener {
         else {
             Random rand = new Random(System.currentTimeMillis());
 
-            for (int i = 0; i < 500; i++) {
+            for (int i = 0; i < _danmakufuPool.getPoolSize(); i++) {
                 double x = rand.nextDouble() * _myCanvas.getWidth();
                 double y = rand.nextDouble() * _myCanvas.getHeight();
                 double xVel = (rand.nextDouble() * 2) * (rand.nextInt() % 2 == 0 ? 1 : -1);
