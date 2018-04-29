@@ -9,7 +9,7 @@ public class DanmakufuPool {
     private Danmakufu _firstAvailable;
     // Delet
     private DanmakufuModel dm = new DanmakufuModel("assets/GLSL/vertex/dan.shader",
-            "assets/GLSL/fragment/dan.shader", "assets/images/pill_danmakufu.png");
+            "assets/GLSL/fragment/dan.shader", "assets/images/hitcircle.png");
 
     public DanmakufuPool() {
         _pool = new Danmakufu[2000];

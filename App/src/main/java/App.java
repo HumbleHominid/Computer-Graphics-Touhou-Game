@@ -26,6 +26,8 @@ public class App extends JFrame implements GLEventListener {
     private double _elapsed = 0.0;
     // The pool of danmakufu objects
     private DanmakufuPool _danmakufuPool;
+    // The perspective matrix to be used
+    private Matrix3D _pMat;
 
     public App() {
         // set the window title
@@ -119,7 +121,7 @@ public class App extends JFrame implements GLEventListener {
         drawBackground(glAD);
 
         // Display the danmakufuPool
-        _danmakufuPool.render(glAD, _elapsed, perspective());
+        _danmakufuPool.render(glAD, _elapsed, _pMat);
     }
 
     private void clearCanvas(GLAutoDrawable glAD) {
@@ -159,17 +161,21 @@ public class App extends JFrame implements GLEventListener {
         // Create danmakufu pool
         _danmakufuPool = new DanmakufuPool();
 
-        if (true) {
-            _danmakufuPool.addDanmakufu(0, 0, -0.001, 0.001, 1000);
+        // Create the orthographic perspective matrix
+        _pMat = perspective();
+
+        // Testing stuff
+        if (false) {
+            _danmakufuPool.addDanmakufu(_myCanvas.getWidth() / 2, _myCanvas.getHeight() / 2, 0.0f, -0.1, 1000);
         }
         else {
             Random rand = new Random(System.currentTimeMillis());
 
             for (int i = 0; i < _danmakufuPool.getPoolSize(); i++) {
-                double x = rand.nextDouble() * 2 - 1;
-                double y = rand.nextDouble() * 2 - 1;
-                double xVel = rand.nextDouble() / 1000 * (rand.nextInt() % 2 == 0 ? 1 : -1);
-                double yVel = rand.nextDouble() / 1000 * (rand.nextInt() % 2 == 0 ? 1 : -1);
+                double x = rand.nextDouble() * _myCanvas.getWidth();
+                double y = rand.nextDouble() * _myCanvas.getHeight();
+                double xVel = ((rand.nextInt() % 3) + 1) * (rand.nextInt() % 2 == 0 ? 1 : -1);
+                double yVel = ((rand.nextInt() % 3) + 1) * (rand.nextInt() % 2 == 0 ? 1 : -1);
                 int lifetime = rand.nextInt() % 1000;
 
                 _danmakufuPool.addDanmakufu(x, y, xVel, yVel, lifetime);
@@ -184,7 +190,7 @@ public class App extends JFrame implements GLEventListener {
     @Override
     public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3,
             int arg4) {
-        // TODO
+        _pMat = perspective();
     }
 
     // Defines an orthographic perspective
@@ -195,8 +201,7 @@ public class App extends JFrame implements GLEventListener {
         float canvasHeight = (float) _myCanvas.getHeight();
 
         // bounds
-        float top = canvasHeight, right = canvasWidth, bot = -canvasHeight,
-                left = -canvasHeight;
+        float top = canvasHeight, right = canvasWidth, bot = 0.0f, left = 0.0f;
         // clipping
         float near = -1.0f, far = 1.0f;
         // vars
@@ -215,7 +220,7 @@ public class App extends JFrame implements GLEventListener {
         perspective.setElementAt(2, 3, -1.0f * (near / clipDiff));
 
         return perspective;
-  }
+    }
 
     /*
      * main

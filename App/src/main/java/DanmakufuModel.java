@@ -20,8 +20,8 @@ public class DanmakufuModel {
     public DanmakufuModel(String vertShaderPath, String fragShaderPath,
             String texturePath) {
         _renderingProgram = createShaderProgram(vertShaderPath, fragShaderPath);
-        setupVertices();
         _texture = loadTexture(texturePath);
+        setupVertices();
     }
 
     public final int getRenderingProgram() {
@@ -43,15 +43,20 @@ public class DanmakufuModel {
     private void setupVertices() {
         GL4 gl = (GL4) GLContext.getCurrentGL();
 
+        // Aspect ratio of the texture
+        float texAr = (_texture == null) ? 1.0f :
+                (float) _texture.getHeight() / (float) _texture.getWidth();
+
+        // Build the vertex positions based on the aspect ration of the texture
         float[] vertex_positions = {
             // Top Triangle
-            -1.0f, 4.0f, 1.0f, // Top Left
-            1.0f, -4.0f, 1.0f, // Bottom Right
-            1.0f, 4.0f, 1.0f,  // Top Right
+            -1.0f, texAr, 1.0f, // Top Left
+            1.0f, -texAr, 1.0f, // Bottom Right
+            1.0f, texAr, 1.0f,  // Top Right
             // Bottom Triangle
-            -1.0f, 4.0f, 1.0f, // Top Left
-            1.0f, -4.0f, 1.0f, // Bottom Right
-            -1.0f, -4.0f, 1.0f // Bottom Left
+            -1.0f, texAr, 1.0f, // Top Left
+            1.0f, -texAr, 1.0f, // Bottom Right
+            -1.0f, -texAr, 1.0f // Bottom Left
         };
 
         float[] texture_coordinates = {
