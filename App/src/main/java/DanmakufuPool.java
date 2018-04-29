@@ -6,16 +6,17 @@ import com.jogamp.opengl.*;
 public class DanmakufuPool {
     // enum of all the danmakufs
     public enum ModelList {
-        CIRCLE("circle.png"),
-        ARROW("arrow.png"),
-        PINK_CIRCLE("pink_circle.png");
+        ARROW("arrow.png", 30.0f),
+        PINK_CIRCLE("pink_circle.png", 30.0f),
+        STAR("star.png", 30.0f),
+        FLOWER("flower.png", 25.0f);
 
         private DanmakufuModel _model;
 
-        private ModelList(String tex) {
+        private ModelList(String tex, float scale) {
             _model = new DanmakufuModel("assets/GLSL/vertex/dan.shader",
                     "assets/GLSL/fragment/dan.shader", "assets/images/" + tex,
-                    30.0f);
+                    scale);
         }
 
         public DanmakufuModel getModel() {

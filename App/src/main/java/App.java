@@ -165,23 +165,27 @@ public class App extends JFrame implements GLEventListener {
         _pMat = perspective();
 
         // Testing stuff
+        Random rand;
+        DanmakufuModel model;
+
         if (false) {
-            DanmakufuModel model = _danmakufuPool.modelList.CIRCLE.getModel();
+            rand = new Random(System.currentTimeMillis());
+            model = _danmakufuPool.modelList.values()[rand.nextInt(_danmakufuPool.modelList.values().length)].getModel();
 
             _danmakufuPool.addDanmakufu(_myCanvas.getWidth() / 2,
                 _myCanvas.getHeight() / 2, 0.0f, -0.1, 1000, model);
         }
         else {
-            Random rand = new Random(System.currentTimeMillis());
+            rand = new Random(System.currentTimeMillis());
 
-            for (int i = 0; i < _danmakufuPool.getPoolSize(); i++) {
+            for (int i = 0; i < _danmakufuPool.getPoolSize() / 2; i++) {
                 double x = rand.nextDouble() * _myCanvas.getWidth();
                 double y = rand.nextDouble() * _myCanvas.getHeight();
                 double xVel = (rand.nextDouble() * 2) * (rand.nextInt() % 2 == 0 ? 1 : -1);
                 double yVel = (rand.nextDouble() * 2) * (rand.nextInt() % 2 == 0 ? 1 : -1);
                 int lifetime = rand.nextInt() % 1000;
 
-                DanmakufuModel model = _danmakufuPool.modelList.values()[rand.nextInt(_danmakufuPool.modelList.values().length)].getModel();
+                model = _danmakufuPool.modelList.values()[rand.nextInt(_danmakufuPool.modelList.values().length)].getModel();
 
                 _danmakufuPool.addDanmakufu(x, y, xVel, yVel, lifetime, model);
             }
