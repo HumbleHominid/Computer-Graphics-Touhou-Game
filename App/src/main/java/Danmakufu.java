@@ -2,7 +2,6 @@ import graphicslib3D.*;
 
 import static com.jogamp.opengl.GL4.*;
 import com.jogamp.opengl.*;
-import com.jogamp.opengl.util.texture.*;
 
 public class Danmakufu {
     // positions
@@ -14,10 +13,10 @@ public class Danmakufu {
     // The next danmakufu in the list
     private Danmakufu _next;
     // The danmakufu model that should be used for this danmakufu
-    private DanmakufuModel _model;
+    private Model _model;
 
     public void init(double x, double y, double xVel, double yVel,
-            int lifetime, DanmakufuModel model) {
+            int lifetime, Model model) {
         // Positions
         _x = x;
         _y = y;

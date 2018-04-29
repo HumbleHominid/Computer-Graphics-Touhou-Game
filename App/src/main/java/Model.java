@@ -7,7 +7,7 @@ import com.jogamp.opengl.util.texture.*;
 import java.io.*;
 import java.nio.FloatBuffer;
 
-public class DanmakufuModel {
+public class Model {
     // Reference to the rendering program being used
     private int _renderingProgram;
     // VAO
@@ -18,7 +18,7 @@ public class DanmakufuModel {
     private Texture _texture;
     private float _scale;
 
-    public DanmakufuModel(String vertShaderPath, String fragShaderPath,
+    public Model(String vertShaderPath, String fragShaderPath,
             String texturePath, float scale) {
         _scale = scale;
         _renderingProgram = createShaderProgram(vertShaderPath, fragShaderPath);

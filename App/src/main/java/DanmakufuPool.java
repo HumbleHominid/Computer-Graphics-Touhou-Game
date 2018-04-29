@@ -11,15 +11,15 @@ public class DanmakufuPool {
         STAR("star.png", 30.0f),
         FLOWER("flower.png", 25.0f);
 
-        private DanmakufuModel _model;
+        private Model _model;
 
         private ModelList(String tex, float scale) {
-            _model = new DanmakufuModel("assets/GLSL/vertex/dan.shader",
+            _model = new Model("assets/GLSL/vertex/dan.shader",
                     "assets/GLSL/fragment/dan.shader", "assets/images/" + tex,
                     scale);
         }
 
-        public DanmakufuModel getModel() {
+        public Model getModel() {
             return _model;
         }
     }
@@ -82,7 +82,7 @@ public class DanmakufuPool {
     }
 
     public void addDanmakufu(double x, double y, double xVel, double yVel,
-            int lifetime, DanmakufuModel model) {
+            int lifetime, Model model) {
         if (_firstAvailable == null || model == null) {
             return;
         }

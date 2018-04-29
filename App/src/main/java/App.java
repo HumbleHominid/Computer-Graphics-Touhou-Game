@@ -6,14 +6,16 @@ import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.common.nio.Buffers;
 
-import java.awt.*;
-import java.nio.*;
-
 import javax.swing.*;
 
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.nio.*;
 import java.util.Random;
+import java.util.HashSet;
 
-public class App extends JFrame implements GLEventListener {
+public class App extends JFrame implements GLEventListener, KeyListener {
     // Game tick set to 60 ticks per second
     private final double NS_PER_UPDATE = 1000000000.0 / 60;
     private GLCanvas _myCanvas;
@@ -28,6 +30,10 @@ public class App extends JFrame implements GLEventListener {
     private DanmakufuPool _danmakufuPool;
     // The perspective matrix to be used
     private Matrix3D _pMat;
+    // the player
+    private Player _player;
+    // a hashed set of the keys being pressed
+    private HashSet<Character> _pressed = new HashSet<Character>();
 
     public App() {
         // set the window title
@@ -35,9 +41,9 @@ public class App extends JFrame implements GLEventListener {
         // set the window size
         setSize(1600, 900);
         // set window to fullscreen
-        // setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         // remove bar on top of window
-        // setUndecorated(true);
+        setUndecorated(true);
         // disable window resize
         setResizable(false);
         // set window 'x' to close
@@ -48,6 +54,7 @@ public class App extends JFrame implements GLEventListener {
 
         // Add canvas listeners
         _myCanvas.addGLEventListener(this);
+        _myCanvas.addKeyListener(this);
 
         // Add my canvas to the pane and set it to visible
         getContentPane().add(_myCanvas);
@@ -99,29 +106,16 @@ public class App extends JFrame implements GLEventListener {
 
     // User Interaction
     public void processInput() {
-        // TODO
+        if (_player != null) {
+            _player.processInput(_pressed);
+        }
+
+        // _pressed.clear();
     }
 
     // Physics and Collision I guess idk
     public void update() {
         _danmakufuPool.update();
-    }
-
-    /* ************************
-     * GLEventListener Handlers
-     * ***********************/
-    /*
-     * (non-Javadoc)
-     * @see com.jogamp.opengl.GLEventListener#display(com.jogamp.opengl.GLAutoDrawable)
-     */
-    @Override
-    public void display(GLAutoDrawable glAD) {
-        clearCanvas(glAD);
-
-        drawBackground(glAD);
-
-        // Display the danmakufuPool
-        _danmakufuPool.render(glAD, _elapsed, _pMat);
     }
 
     private void clearCanvas(GLAutoDrawable glAD) {
@@ -138,68 +132,6 @@ public class App extends JFrame implements GLEventListener {
         float[] bkg = { 0.1f, 0.1f, 0.1f, 1.0f };
         FloatBuffer buff = Buffers.newDirectFloatBuffer(bkg);
         gl.glClearBufferfv(GL_COLOR, 0, buff);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.jogamp.opengl.GLEventListener#dispose(com.jogamp.opengl.GLAutoDrawable)
-     */
-    @Override
-    public void dispose(GLAutoDrawable arg0) {
-        // TODO
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.jogamp.opengl.GLEventListener#init(com.jogamp.opengl.GLAutoDrawable)
-     */
-    @Override
-    public void init(GLAutoDrawable glAD) {
-        // Disable V-Sync. Bad for poopoo computers though
-        glAD.getGL().setSwapInterval(0);
-
-        // Create danmakufu pool
-        _danmakufuPool = new DanmakufuPool();
-
-        // Create the orthographic perspective matrix
-        _pMat = perspective();
-
-        // Testing stuff
-        Random rand;
-        DanmakufuModel model;
-
-        if (false) {
-            rand = new Random(System.currentTimeMillis());
-            model = _danmakufuPool.modelList.values()[rand.nextInt(_danmakufuPool.modelList.values().length)].getModel();
-
-            _danmakufuPool.addDanmakufu(_myCanvas.getWidth() / 2,
-                _myCanvas.getHeight() / 2, 0.0f, -0.1, 1000, model);
-        }
-        else {
-            rand = new Random(System.currentTimeMillis());
-
-            for (int i = 0; i < _danmakufuPool.getPoolSize() / 2; i++) {
-                double x = rand.nextDouble() * _myCanvas.getWidth();
-                double y = rand.nextDouble() * _myCanvas.getHeight();
-                double xVel = (rand.nextDouble() * 2) * (rand.nextInt() % 2 == 0 ? 1 : -1);
-                double yVel = (rand.nextDouble() * 2) * (rand.nextInt() % 2 == 0 ? 1 : -1);
-                int lifetime = rand.nextInt() % 1000;
-
-                model = _danmakufuPool.modelList.values()[rand.nextInt(_danmakufuPool.modelList.values().length)].getModel();
-
-                _danmakufuPool.addDanmakufu(x, y, xVel, yVel, lifetime, model);
-            }
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.jogamp.opengl.GLEventListener#reshape(com.jogamp.opengl.GLAutoDrawable, int, int, int, int)
-     */
-    @Override
-    public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3,
-            int arg4) {
-        _pMat = perspective();
     }
 
     // Defines an orthographic perspective
@@ -229,6 +161,116 @@ public class App extends JFrame implements GLEventListener {
         perspective.setElementAt(2, 3, -1.0f * (near / clipDiff));
 
         return perspective;
+    }
+
+    /* ************************
+     * GLEventListener Handlers
+     * ***********************/
+    /*
+     * (non-Javadoc)
+     * @see com.jogamp.opengl.GLEventListener#display(com.jogamp.opengl.GLAutoDrawable)
+     */
+    @Override
+    public void display(GLAutoDrawable glAD) {
+        clearCanvas(glAD);
+
+        drawBackground(glAD);
+
+        // Display the player
+        _player.render(glAD, _pMat);
+
+        // Display the danmakufuPool
+        _danmakufuPool.render(glAD, _elapsed, _pMat);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see com.jogamp.opengl.GLEventListener#dispose(com.jogamp.opengl.GLAutoDrawable)
+     */
+    @Override
+    public void dispose(GLAutoDrawable arg0) {
+        // TODO
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see com.jogamp.opengl.GLEventListener#init(com.jogamp.opengl.GLAutoDrawable)
+     */
+    @Override
+    public void init(GLAutoDrawable glAD) {
+        // Disable V-Sync. Bad for poopoo computers though
+        glAD.getGL().setSwapInterval(0);
+
+        // Create danmakufu pool
+        _danmakufuPool = new DanmakufuPool();
+
+        // Create the orthographic perspective matrix
+        _pMat = perspective();
+
+        // create a new player
+        _player = new Player();
+        _player.setModel(new Model("assets/GLSL/vertex/player.shader",
+                "assets/GLSL/fragment/player.shader", "assets/images/juice.jpg",
+                75.0f));
+
+        // Testing stuff
+        if (true) {
+            Random rand;
+            Model model;
+            rand = new Random(System.currentTimeMillis());
+
+            for (int i = 0; i < _danmakufuPool.getPoolSize() / 2; i++) {
+                double x = rand.nextDouble() * _myCanvas.getWidth();
+                double y = rand.nextDouble() * _myCanvas.getHeight();
+                double xVel = (rand.nextDouble() * 2) * (rand.nextInt() % 2 == 0 ? 1 : -1);
+                double yVel = (rand.nextDouble() * 2) * (rand.nextInt() % 2 == 0 ? 1 : -1);
+                int lifetime = rand.nextInt() % 1000;
+
+                model = _danmakufuPool.modelList.values()[rand.nextInt(_danmakufuPool.modelList.values().length)].getModel();
+
+                _danmakufuPool.addDanmakufu(x, y, xVel, yVel, lifetime, model);
+            }
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see com.jogamp.opengl.GLEventListener#reshape(com.jogamp.opengl.GLAutoDrawable, int, int, int, int)
+     */
+    @Override
+    public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3,
+            int arg4) {
+        _pMat = perspective();
+    }
+
+    /* ********************
+     * KeyListener Handlers
+     * *******************/
+    /*
+     * (non-Javadoc)
+     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+     */
+    @Override
+    public void keyPressed(KeyEvent e) {
+        _pressed.add(e.getKeyChar());
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+     */
+    @Override
+    public void keyReleased(KeyEvent e) {
+        _pressed.remove(e.getKeyChar());
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+     */
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // TODO or not lol
     }
 
     /*
