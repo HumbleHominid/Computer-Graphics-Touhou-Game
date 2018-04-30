@@ -3,6 +3,7 @@ import graphicslib3D.*;
 import static com.jogamp.opengl.GL4.*;
 import com.jogamp.opengl.*;
 import java.util.HashSet;
+import java.awt.event.KeyEvent;
 
 public class Player {
     // the players model
@@ -68,20 +69,23 @@ public class Player {
         gl.glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 
-    public void processInput(HashSet<Character> pressed) {
-        for (Character c : pressed) {
+    public void processInput(HashSet<Integer> pressed) {
+        // Scale the velocity down if alt is held
+        float velScale = pressed.contains(KeyEvent.VK_ALT) ? 0.25f : 1.0f;
+
+        for (Integer c : pressed) {
             switch (c) {
-                case 'w':
-                    _y = _y + _yVel;
+                case KeyEvent.VK_W:
+                    _y = _y + (_yVel * velScale);
                     break;
-                case 'a':
-                    _x = _x - _xVel;
+                case KeyEvent.VK_A:
+                    _x = _x - (_xVel * velScale);
                     break;
-                case 's':
-                    _y = _y - _yVel;
+                case KeyEvent.VK_S:
+                    _y = _y - (_yVel * velScale);
                     break;
-                case 'd':
-                    _x = _x + _xVel;
+                case KeyEvent.VK_D:
+                    _x = _x + (_xVel * velScale);
                     break;
             }
         }

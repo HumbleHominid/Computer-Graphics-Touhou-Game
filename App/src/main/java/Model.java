@@ -12,10 +12,12 @@ public class Model {
     private int _renderingProgram;
     // VAO
     private int[] _vao = new int[1];
-    // VAB
+    // VBO
     private int[] _vbo = new int[2];
     // Reference to texture
     private Texture _texture;
+    // The scale of the model. Note that this isn't that good and should
+    //  probably be handled outside of this class
     private float _scale;
 
     public Model(String vertShaderPath, String fragShaderPath,

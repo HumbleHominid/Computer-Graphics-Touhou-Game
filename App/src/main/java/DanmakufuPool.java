@@ -39,13 +39,6 @@ public class DanmakufuPool {
         fillPool();
     }
 
-    // not sure i need this. will remove if excess overhead
-    public DanmakufuPool(int size) {
-        _pool = new Danmakufu[size];
-
-        fillPool();
-    }
-
     public int getPoolSize() {
         return _pool.length;
     }

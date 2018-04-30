@@ -33,7 +33,7 @@ public class App extends JFrame implements GLEventListener, KeyListener {
     // the player
     private Player _player;
     // a hashed set of the keys being pressed
-    private HashSet<Character> _pressed = new HashSet<Character>();
+    private HashSet<Integer> _pressed = new HashSet<Integer>();
 
     public App() {
         // set the window title
@@ -92,9 +92,7 @@ public class App extends JFrame implements GLEventListener, KeyListener {
                 _numRenderTimes = 0;
             }
 
-            _renderTimes[_numRenderTimes] = _renderTime;
-
-            _numRenderTimes++;
+            _renderTimes[_numRenderTimes++] = _renderTime;
 
             // set frameCovered. this is for extrapolating rendering
             _elapsed = lag / NS_PER_UPDATE;
@@ -118,6 +116,7 @@ public class App extends JFrame implements GLEventListener, KeyListener {
         _danmakufuPool.update();
     }
 
+    // Clears the canvas
     private void clearCanvas(GLAutoDrawable glAD) {
         GL4 gl = (GL4) glAD.getGL();
 
@@ -125,10 +124,10 @@ public class App extends JFrame implements GLEventListener, KeyListener {
         gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT);
     }
 
+    // Draws the background
     private void drawBackground(GLAutoDrawable glAD) {
         GL4 gl = (GL4) glAD.getGL();
 
-        // Draw the Background
         float[] bkg = { 0.1f, 0.1f, 0.1f, 1.0f };
         FloatBuffer buff = Buffers.newDirectFloatBuffer(bkg);
         gl.glClearBufferfv(GL_COLOR, 0, buff);
@@ -189,7 +188,7 @@ public class App extends JFrame implements GLEventListener, KeyListener {
      */
     @Override
     public void dispose(GLAutoDrawable arg0) {
-        // TODO
+        // TODO idk what this does
     }
 
     /*
@@ -213,7 +212,7 @@ public class App extends JFrame implements GLEventListener, KeyListener {
                 "assets/GLSL/fragment/player.shader", "assets/images/juice.jpg",
                 75.0f));
 
-        // Testing stuff
+        // Testing stuff; please ignore
         if (true) {
             Random rand;
             Model model;
@@ -252,7 +251,7 @@ public class App extends JFrame implements GLEventListener, KeyListener {
      */
     @Override
     public void keyPressed(KeyEvent e) {
-        _pressed.add(e.getKeyChar());
+        _pressed.add(e.getKeyCode());
     }
 
     /*
@@ -261,7 +260,7 @@ public class App extends JFrame implements GLEventListener, KeyListener {
      */
     @Override
     public void keyReleased(KeyEvent e) {
-        _pressed.remove(e.getKeyChar());
+        _pressed.remove(e.getKeyCode());
     }
 
     /*
@@ -276,6 +275,7 @@ public class App extends JFrame implements GLEventListener, KeyListener {
     /*
      * main
      */
+    // scary
     public static void main(String[] args) {
         new App().gameLoop();
     }

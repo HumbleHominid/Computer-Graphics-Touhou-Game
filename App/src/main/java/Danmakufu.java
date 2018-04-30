@@ -84,7 +84,7 @@ public class Danmakufu {
         // Rotation
         mMat.rotateZ(rotAmt);
 
-        // Get pointers to the matrix locations
+        // Get "pointers" to the matrix locations
         int m_loc = gl.glGetUniformLocation(_model.getRenderingProgram(),
                 "mv_matrix");
         int p_loc = gl.glGetUniformLocation(_model.getRenderingProgram(),
