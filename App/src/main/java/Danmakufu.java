@@ -61,7 +61,8 @@ public class Danmakufu {
         // Make the model matrix
         Matrix3D mMat = new Matrix3D();
 
-        // translate
+        // translate; This is really physics. Should use a pysics componen
+        //  probably
         mMat.translate(_x + _xVel * elapsed, _y + _yVel * elapsed, 0.0f);
 
         // scale

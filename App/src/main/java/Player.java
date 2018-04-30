@@ -2,6 +2,7 @@ import graphicslib3D.*;
 
 import static com.jogamp.opengl.GL4.*;
 import com.jogamp.opengl.*;
+
 import java.util.HashSet;
 import java.awt.event.KeyEvent;
 
@@ -12,6 +13,10 @@ public class Player {
     private double _x, _y;
     // velocities
     private double _xVel, _yVel;
+    // Maybe implement physics like this? Ends up being a component pattern
+    // private Physics _physics
+    // then call like _physics.doPhysics(this)
+    private ProcessInputable _input;
 
     public Player() {
         // set the initial position
@@ -21,6 +26,9 @@ public class Player {
         // set the initial velocity
         _xVel = 0.25f;
         _yVel = 0.25f;
+
+        // set the input component
+        _input = new PlayerInputComponent();
     }
 
     public void setModel(Model model) {
@@ -70,24 +78,6 @@ public class Player {
     }
 
     public void processInput(HashSet<Integer> pressed) {
-        // Scale the velocity down if alt is held
-        float velScale = pressed.contains(KeyEvent.VK_ALT) ? 0.25f : 1.0f;
-
-        for (Integer c : pressed) {
-            switch (c) {
-                case KeyEvent.VK_W:
-                    _y = _y + (_yVel * velScale);
-                    break;
-                case KeyEvent.VK_A:
-                    _x = _x - (_xVel * velScale);
-                    break;
-                case KeyEvent.VK_S:
-                    _y = _y - (_yVel * velScale);
-                    break;
-                case KeyEvent.VK_D:
-                    _x = _x + (_xVel * velScale);
-                    break;
-            }
-        }
+        _input.processInput(this, pressed);
     }
 }

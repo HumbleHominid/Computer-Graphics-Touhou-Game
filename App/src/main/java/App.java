@@ -107,8 +107,6 @@ public class App extends JFrame implements GLEventListener, KeyListener {
         if (_player != null) {
             _player.processInput(_pressed);
         }
-
-        // _pressed.clear();
     }
 
     // Physics and Collision I guess idk
