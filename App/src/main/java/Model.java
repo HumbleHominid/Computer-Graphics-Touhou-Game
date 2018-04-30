@@ -7,21 +7,25 @@ import com.jogamp.opengl.util.texture.*;
 import java.io.*;
 import java.nio.FloatBuffer;
 
-public class DanmakufuModel {
+public class Model {
     // Reference to the rendering program being used
     private int _renderingProgram;
     // VAO
     private int[] _vao = new int[1];
-    // VAB
+    // VBO
     private int[] _vbo = new int[2];
     // Reference to texture
     private Texture _texture;
+    // The scale of the model. Note that this isn't that good and should
+    //  probably be handled outside of this class
+    private float _scale;
 
-    public DanmakufuModel(String vertShaderPath, String fragShaderPath,
-            String texturePath) {
+    public Model(String vertShaderPath, String fragShaderPath,
+            String texturePath, float scale) {
+        _scale = scale;
         _renderingProgram = createShaderProgram(vertShaderPath, fragShaderPath);
-        setupVertices();
         _texture = loadTexture(texturePath);
+        setupVertices();
     }
 
     public final int getRenderingProgram() {
@@ -40,29 +44,38 @@ public class DanmakufuModel {
         return _texture;
     }
 
+    public final float getScale() {
+        return _scale;
+    }
+
     private void setupVertices() {
         GL4 gl = (GL4) GLContext.getCurrentGL();
 
+        // Aspect ratio of the texture
+        float texAr = (_texture == null) ? 1.0f :
+                (float) _texture.getHeight() / (float) _texture.getWidth();
+
+        // Build the vertex positions based on the aspect ration of the texture
         float[] vertex_positions = {
             // Top Triangle
-            -1.0f, 1.0f, 1.0f,
-            1.0f, -1.0f, 1.0f,
-            1.0f, 1.0f, 1.0f,
+            -1.0f, texAr, 1.0f, // Top Left
+            1.0f, -texAr, 1.0f, // Bottom Right
+            1.0f, texAr, 1.0f,  // Top Right
             // Bottom Triangle
-            -1.0f, 1.0f, 1.0f,
-            1.0f, -1.0f, 1.0f,
-            -1.0f, -1.0f, 1.0f
+            -1.0f, texAr, 1.0f, // Top Left
+            1.0f, -texAr, 1.0f, // Bottom Right
+            -1.0f, -texAr, 1.0f // Bottom Left
         };
 
         float[] texture_coordinates = {
             // Top Triangle
-            0.0f, 1.0f,
-            1.0f, 0.0f,
-            1.0f, 1.0f,
+            0.0f, 1.0f, // Top Left
+            1.0f, 0.0f, // Bottom Right
+            1.0f, 1.0f, // Top Right
             // Bottom Triangle
-            0.0f, 1.0f,
-            1.0f, 0.0f,
-            0.0f, 0.0f
+            0.0f, 1.0f, // Top Left
+            1.0f, 0.0f, // Bottom Right
+            0.0f, 0.0f  // Bottom Left
         };
 
         gl.glGenVertexArrays(_vao.length, _vao, 0);

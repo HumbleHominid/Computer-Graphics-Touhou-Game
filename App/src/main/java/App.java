@@ -1,17 +1,21 @@
+import graphicslib3D.*;
+
 import static com.jogamp.opengl.GL4.*;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.awt.TextRenderer;
 import com.jogamp.common.nio.Buffers;
 
-import java.awt.*;
-
 import javax.swing.*;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.event.KeyEvent;
 import java.nio.*;
-
 import java.util.Random;
+import java.util.HashSet;
 
-public class App extends JFrame implements GLEventListener {
+public class App extends JFrame implements GLEventListener, KeyListener {
     // Game tick set to 60 ticks per second
     private final double NS_PER_UPDATE = 1000000000.0 / 60;
     private GLCanvas _myCanvas;
@@ -24,6 +28,12 @@ public class App extends JFrame implements GLEventListener {
     private double _elapsed = 0.0;
     // The pool of danmakufu objects
     private DanmakufuPool _danmakufuPool;
+    // The perspective matrix to be used
+    private Matrix3D _pMat;
+    // the player
+    private Player _player;
+    // a hashed set of the keys being pressed
+    private HashSet<Integer> _pressed = new HashSet<Integer>();
 
     public App() {
         // set the window title
@@ -31,9 +41,9 @@ public class App extends JFrame implements GLEventListener {
         // set the window size
         setSize(1600, 900);
         // set window to fullscreen
-        // setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         // remove bar on top of window
-        // setUndecorated(true);
+        setUndecorated(true);
         // disable window resize
         setResizable(false);
         // set window 'x' to close
@@ -44,6 +54,7 @@ public class App extends JFrame implements GLEventListener {
 
         // Add canvas listeners
         _myCanvas.addGLEventListener(this);
+        _myCanvas.addKeyListener(this);
 
         // Add my canvas to the pane and set it to visible
         getContentPane().add(_myCanvas);
@@ -81,9 +92,7 @@ public class App extends JFrame implements GLEventListener {
                 _numRenderTimes = 0;
             }
 
-            _renderTimes[_numRenderTimes] = _renderTime;
-
-            _numRenderTimes++;
+            _renderTimes[_numRenderTimes++] = _renderTime;
 
             // set frameCovered. this is for extrapolating rendering
             _elapsed = lag / NS_PER_UPDATE;
@@ -93,14 +102,62 @@ public class App extends JFrame implements GLEventListener {
         }
     }
 
-    // User Interaction (10)
+    // User Interaction
     public void processInput() {
-        // TODO
+        if (_player != null) {
+            _player.processInput(_pressed);
+        }
     }
 
-    // Physics (10) and Collision (10) I guess idk
+    // Physics and Collision I guess idk
     public void update() {
         _danmakufuPool.update();
+    }
+
+    // Clears the canvas
+    private void clearCanvas(GLAutoDrawable glAD) {
+        GL4 gl = (GL4) glAD.getGL();
+
+        // Clearing the canvas is important
+        gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT);
+    }
+
+    // Draws the background
+    private void drawBackground(GLAutoDrawable glAD) {
+        GL4 gl = (GL4) glAD.getGL();
+
+        float[] bkg = { 0.1f, 0.1f, 0.1f, 1.0f };
+        FloatBuffer buff = Buffers.newDirectFloatBuffer(bkg);
+        gl.glClearBufferfv(GL_COLOR, 0, buff);
+    }
+
+    // Defines an orthographic perspective
+    private Matrix3D perspective() {
+        Matrix3D perspective = new Matrix3D();
+
+        float canvasWidth = (float) _myCanvas.getWidth();
+        float canvasHeight = (float) _myCanvas.getHeight();
+
+        // bounds
+        float top = canvasHeight, right = canvasWidth, bot = 0.0f, left = 0.0f;
+        // clipping
+        float near = -1.0f, far = 1.0f;
+        // vars
+        float width = right - left;
+        float height = top - bot;
+        float clipDiff = far - near;
+
+        // viewport x
+        perspective.setElementAt(0, 0, 2.0f / width);
+        perspective.setElementAt(0, 3, -1.0f * ((right + left) / width));
+        // viewport y
+        perspective.setElementAt(1, 1, 2.0f / height);
+        perspective.setElementAt(1, 3, -1.0f * ((top + bot) / height));
+        // viewport z
+        perspective.setElementAt(2, 2, 1.0f / clipDiff);
+        perspective.setElementAt(2, 3, -1.0f * (near / clipDiff));
+
+        return perspective;
     }
 
     /* ************************
@@ -116,24 +173,11 @@ public class App extends JFrame implements GLEventListener {
 
         drawBackground(glAD);
 
+        // Display the player
+        _player.render(glAD, _pMat);
+
         // Display the danmakufuPool
-        _danmakufuPool.render(glAD, _elapsed);
-    }
-
-    private void clearCanvas(GLAutoDrawable glAD) {
-        GL4 gl = (GL4) glAD.getGL();
-
-        // Clearing the canvas is important
-        gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT);
-    }
-
-    private void drawBackground(GLAutoDrawable glAD) {
-        GL4 gl = (GL4) glAD.getGL();
-
-        // Draw the Background
-        float[] bkg = { 0.1f, 0.1f, 0.1f, 1.0f };
-        FloatBuffer buff = Buffers.newDirectFloatBuffer(bkg);
-        gl.glClearBufferfv(GL_COLOR, 0, buff);
+        _danmakufuPool.render(glAD, _elapsed, _pMat);
     }
 
     /*
@@ -142,7 +186,7 @@ public class App extends JFrame implements GLEventListener {
      */
     @Override
     public void dispose(GLAutoDrawable arg0) {
-        // TODO
+        // TODO idk what this does
     }
 
     /*
@@ -157,18 +201,32 @@ public class App extends JFrame implements GLEventListener {
         // Create danmakufu pool
         _danmakufuPool = new DanmakufuPool();
 
-        // _danmakufuPool.addDanmakufu(0, 0, 0.0, 0.0, 1000);
+        // Create the orthographic perspective matrix
+        _pMat = perspective();
 
-        Random rand = new Random(System.currentTimeMillis());
+        // create a new player
+        _player = new Player();
+        _player.setModel(new Model("assets/GLSL/vertex/player.shader",
+                "assets/GLSL/fragment/player.shader", "assets/images/juice.jpg",
+                75.0f));
 
-        for (int i = 0; i < _danmakufuPool.getPoolSize(); i++) {
-            double x = rand.nextDouble() * 2 - 1;
-            double y = rand.nextDouble() * 2 - 1;
-            double xVel = rand.nextDouble() / 1000 * (rand.nextInt() % 2 == 0 ? 1 : -1);
-            double yVel = rand.nextDouble() / 100 * -1;
-            int lifetime = rand.nextInt() % 1000;
+        // Testing stuff; please ignore
+        if (true) {
+            Random rand;
+            Model model;
+            rand = new Random(System.currentTimeMillis());
 
-            _danmakufuPool.addDanmakufu(x, y, xVel, yVel, lifetime);
+            for (int i = 0; i < _danmakufuPool.getPoolSize() / 2; i++) {
+                double x = rand.nextDouble() * _myCanvas.getWidth();
+                double y = rand.nextDouble() * _myCanvas.getHeight();
+                double xVel = (rand.nextDouble() * 2) * (rand.nextInt() % 2 == 0 ? 1 : -1);
+                double yVel = (rand.nextDouble() * 2) * (rand.nextInt() % 2 == 0 ? 1 : -1);
+                int lifetime = rand.nextInt() % 1000;
+
+                model = _danmakufuPool.modelList.values()[rand.nextInt(_danmakufuPool.modelList.values().length)].getModel();
+
+                _danmakufuPool.addDanmakufu(x, y, xVel, yVel, lifetime, model);
+            }
         }
     }
 
@@ -179,12 +237,43 @@ public class App extends JFrame implements GLEventListener {
     @Override
     public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3,
             int arg4) {
-        // TODO
+        _pMat = perspective();
+    }
+
+    /* ********************
+     * KeyListener Handlers
+     * *******************/
+    /*
+     * (non-Javadoc)
+     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+     */
+    @Override
+    public void keyPressed(KeyEvent e) {
+        _pressed.add(e.getKeyCode());
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+     */
+    @Override
+    public void keyReleased(KeyEvent e) {
+        _pressed.remove(e.getKeyCode());
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+     */
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // TODO or not lol
     }
 
     /*
      * main
      */
+    // scary
     public static void main(String[] args) {
         new App().gameLoop();
     }
