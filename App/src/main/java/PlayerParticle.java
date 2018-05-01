@@ -9,30 +9,33 @@ public class PlayerParticle implements Particle {
     private Model _model;
     private double _x, _y;
 
-    private double _xVel = 0, _yVel = 0;
+    private double _xVel, _yVel;
 
     private int _lifetime;
 
-    public PlayerParticle(double x, double y, int lifetime, Model model) {
+    public PlayerParticle(Model model) {
+        _model = model;
+
+        _lifetime = 0;
+    }
+
+    public void init(double x, double y, int lifetime) {
         // position
         _x = x;
         _y = y;
 
         _lifetime = lifetime;
 
-        // model
-        _model = model;
-
         // set the _xVel, _yVel dependent on the time created
         int angle = (int) (System.nanoTime() % 360);
         double scale = new Random(System.nanoTime()).nextDouble();
 
-        _xVel = Math.cos(angle) * scale;
-        _yVel = Math.sin(angle) * scale;
+        _xVel = Math.cos(angle) * 1.5;
+        _yVel = Math.sin(angle) * 1.5;
     }
 
     public PlayerParticle cloneParticle() {
-        return new PlayerParticle(_x, _y, _lifetime, _model);
+        return new PlayerParticle(_model);
     }
 
     public void render(GLAutoDrawable glAD, double elapsed, Matrix3D pMat) {

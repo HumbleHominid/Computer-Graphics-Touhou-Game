@@ -5,6 +5,7 @@ import com.jogamp.opengl.*;
 
 import java.util.HashSet;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 
 public class Player {
     // the players model
@@ -33,8 +34,8 @@ public class Player {
         // set the input component
         _input = new PlayerInputComponent();
 
-        _particleSpawner = new ParticleSpawner(new PlayerParticle(_x, _y, 600,
-                DanmakufuModels.FLOWER.getModel()));
+        _particleSpawner = new ParticleSpawner(
+                new PlayerParticle(DanmakufuModels.FLOWER.getModel()));
 
         for (int i = 0; i < _particlePool.length; i++) {
             _particlePool[i] = _particleSpawner.spawnParticle();
@@ -47,6 +48,11 @@ public class Player {
 
     public void render(GLAutoDrawable glAD, double elapsed, Matrix3D pMat) {
         GL4 gl = (GL4) glAD.getGL();
+
+        // draw the particles
+        for (Particle p : _particlePool) {
+            p.render(glAD, elapsed, pMat);
+        }
 
         // Use the rendering program associated with the model
         gl.glUseProgram(_model.getRenderingProgram());
@@ -85,11 +91,6 @@ public class Player {
 
         // Draw the thing
         gl.glDrawArrays(GL_TRIANGLES, 0, 6);
-
-        // draw the particles
-        for (Particle p : _particlePool) {
-            p.render(glAD, elapsed, pMat);
-        }
     }
 
     public void update() {
@@ -100,5 +101,13 @@ public class Player {
 
     public void processInput(HashSet<Integer> pressed) {
         _input.processInput(this, pressed);
+
+        //create a new particle
+        for (Particle p : _particlePool) {
+            if (!p.isInUse()) {
+                ((PlayerParticle) p).init(_x, _y, new Random(System.nanoTime()).nextInt() % 300);
+                return;
+            }
+        }
     }
 }

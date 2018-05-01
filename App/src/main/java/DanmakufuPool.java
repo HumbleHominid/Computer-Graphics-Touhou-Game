@@ -1,6 +1,5 @@
 import graphicslib3D.*;
 
-import static com.jogamp.opengl.GL4.*;
 import com.jogamp.opengl.*;
 
 public class DanmakufuPool {
