@@ -3,49 +3,43 @@ import graphicslib3D.*;
 import static com.jogamp.opengl.GL4.*;
 import com.jogamp.opengl.*;
 
-import java.util.HashSet;
-import java.awt.event.KeyEvent;
+import java.util.Random;
 
-public class Player {
-    // the players model
+public class PlayerParticle implements Particle {
     private Model _model;
-    // coords
-    double _x, _y;
-    // velocities
-    double _xVel, _yVel;
-    // Maybe implement physics like this? Ends up being a component pattern
-    // private Physics _physics
-    // then call like _physics.doPhysics(this)
-    private ProcessInputable _input;
+    private double _x, _y;
 
-    private Particle[] _particlePool = new Particle[200];
-    private ParticleSpawner _particleSpawner;
+    private double _xVel = 0, _yVel = 0;
 
-    public Player() {
-        // set the initial position
-        _x = 500.0;
-        _y = 500.0;
+    private int _lifetime;
 
-        // set the initial velocity
-        _xVel = 0.25f;
-        _yVel = 0.25f;
+    public PlayerParticle(double x, double y, int lifetime, Model model) {
+        // position
+        _x = x;
+        _y = y;
 
-        // set the input component
-        _input = new PlayerInputComponent();
+        _lifetime = lifetime;
 
-        _particleSpawner = new ParticleSpawner(new PlayerParticle(_x, _y, 600,
-                DanmakufuModels.FLOWER.getModel()));
+        // model
+        _model = model;
 
-        for (int i = 0; i < _particlePool.length; i++) {
-            _particlePool[i] = _particleSpawner.spawnParticle();
-        }
+        // set the _xVel, _yVel dependent on the time created
+        int angle = (int) (System.nanoTime() % 360);
+        double scale = new Random(System.nanoTime()).nextDouble();
+
+        _xVel = Math.cos(angle) * scale;
+        _yVel = Math.sin(angle) * scale;
     }
 
-    public void setModel(Model model) {
-        _model = model;
+    public PlayerParticle cloneParticle() {
+        return new PlayerParticle(_x, _y, _lifetime, _model);
     }
 
     public void render(GLAutoDrawable glAD, double elapsed, Matrix3D pMat) {
+        if (!isInUse()) {
+            return;
+        }
+
         GL4 gl = (GL4) glAD.getGL();
 
         // Use the rendering program associated with the model
@@ -55,7 +49,7 @@ public class Player {
         Matrix3D mMat = new Matrix3D();
 
         // translate
-        mMat.translate(_x, _y, 0.0f);
+        mMat.translate(_x + (_xVel * elapsed), _y + (_yVel * elapsed), 0.0f);
 
         // scale
         mMat.scale(_model.getScale(), _model.getScale(), 0.0f);
@@ -79,26 +73,36 @@ public class Player {
         gl.glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
         gl.glEnableVertexAttribArray(1);
 
+        // Blend the pixels
+        gl.glEnable(GL_BLEND);
+        gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        gl.glBlendEquation(GL_FUNC_ADD);
+
         // activate the textures
         gl.glActiveTexture(GL_TEXTURE0);
         gl.glBindTexture(GL_TEXTURE_2D, _model.getTexture().getTextureObject());
 
         // Draw the thing
         gl.glDrawArrays(GL_TRIANGLES, 0, 6);
-
-        // draw the particles
-        for (Particle p : _particlePool) {
-            p.render(glAD, elapsed, pMat);
-        }
     }
 
-    public void update() {
-        for (Particle p : _particlePool) {
-            p.update();
-        }
+    public boolean isInUse() {
+        return _lifetime > 0;
     }
 
-    public void processInput(HashSet<Integer> pressed) {
-        _input.processInput(this, pressed);
+    public boolean update() {
+        // Return if update was called on a danmakufu that is not in use
+        if (!isInUse()) {
+            return false;
+        }
+
+        // Update the position
+        _x = _x + _xVel;
+        _y = _y + _yVel;
+
+        // Update the lifetime
+        _lifetime--;
+
+        return _lifetime < 1;
     }
 }

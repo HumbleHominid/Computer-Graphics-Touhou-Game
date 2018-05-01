@@ -1,8 +1,9 @@
 import java.util.HashSet;
 import java.awt.event.KeyEvent;
 
-public class PlayerInputComponent {
-    public void processInput(Player player, HashSet<Integer> pressed) {
+public class PlayerInputComponent implements ProcessInputable {
+    public void processInput(Object obj, HashSet<Integer> pressed) {
+        Player player = (Player) obj;
         float velScale = pressed.contains(KeyEvent.VK_ALT) ? 0.25f : 1.0f;
 
         for (Integer c : pressed) {

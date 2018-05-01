@@ -118,7 +118,7 @@ public class Danmakufu {
     }
 
     public boolean isInUse() {
-        return _lifetime > 1;
+        return _lifetime > 0;
     }
 
     public final Danmakufu getNext() {

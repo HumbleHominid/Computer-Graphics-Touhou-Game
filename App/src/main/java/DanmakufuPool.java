@@ -4,29 +4,6 @@ import static com.jogamp.opengl.GL4.*;
 import com.jogamp.opengl.*;
 
 public class DanmakufuPool {
-    // enum of all the danmakufs
-    public enum ModelList {
-        ARROW("arrow.png", 30.0f),
-        PINK_CIRCLE("pink_circle.png", 30.0f),
-        STAR("star.png", 30.0f),
-        FLOWER("flower.png", 25.0f);
-
-        private Model _model;
-
-        private ModelList(String tex, float scale) {
-            _model = new Model("assets/GLSL/vertex/dan.shader",
-                    "assets/GLSL/fragment/dan.shader", "assets/images/" + tex,
-                    scale);
-        }
-
-        public Model getModel() {
-            return _model;
-        }
-    }
-
-    // make the enum public
-    public ModelList modelList;
-
     // Container
     private Danmakufu[] _pool;
 

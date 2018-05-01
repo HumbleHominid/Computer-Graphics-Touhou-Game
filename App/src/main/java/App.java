@@ -41,9 +41,9 @@ public class App extends JFrame implements GLEventListener, KeyListener {
         // set the window size
         setSize(1600, 900);
         // set window to fullscreen
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        // setExtendedState(JFrame.MAXIMIZED_BOTH);
         // remove bar on top of window
-        setUndecorated(true);
+        // setUndecorated(true);
         // disable window resize
         setResizable(false);
         // set window 'x' to close
@@ -112,6 +112,8 @@ public class App extends JFrame implements GLEventListener, KeyListener {
     // Physics and Collision I guess idk
     public void update() {
         _danmakufuPool.update();
+
+        _player.update();
     }
 
     // Clears the canvas
@@ -174,7 +176,7 @@ public class App extends JFrame implements GLEventListener, KeyListener {
         drawBackground(glAD);
 
         // Display the player
-        _player.render(glAD, _pMat);
+        _player.render(glAD, _elapsed, _pMat);
 
         // Display the danmakufuPool
         _danmakufuPool.render(glAD, _elapsed, _pMat);
@@ -211,7 +213,7 @@ public class App extends JFrame implements GLEventListener, KeyListener {
                 75.0f));
 
         // Testing stuff; please ignore
-        if (true) {
+        if (false) {
             Random rand;
             Model model;
             rand = new Random(System.currentTimeMillis());
@@ -223,7 +225,7 @@ public class App extends JFrame implements GLEventListener, KeyListener {
                 double yVel = (rand.nextDouble() * 2) * (rand.nextInt() % 2 == 0 ? 1 : -1);
                 int lifetime = rand.nextInt() % 1000;
 
-                model = _danmakufuPool.modelList.values()[rand.nextInt(_danmakufuPool.modelList.values().length)].getModel();
+                model = DanmakufuModels.values()[rand.nextInt(DanmakufuModels.values().length)].getModel();
 
                 _danmakufuPool.addDanmakufu(x, y, xVel, yVel, lifetime, model);
             }
