@@ -211,7 +211,7 @@ public class App extends JFrame implements GLEventListener, KeyListener {
         _player.setModel(new Model("assets/images/juice.jpg", 75.0f));
 
         // Testing stuff; please ignore
-        if (false) {
+        if (true) {
             Random rand;
             Model model;
             rand = new Random(System.currentTimeMillis());

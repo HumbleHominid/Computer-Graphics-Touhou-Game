@@ -34,7 +34,7 @@ public class Player {
         // set the input component
         _input = new PlayerInputComponent();
 
-        Model playerModel = new Model("assets/images/player_particle", 2.0f);
+        Model playerModel = new Model("assets/images/player_particle.png", 12.0f);
 
         _particleSpawner = new ParticleSpawner(new PlayerParticle(playerModel));
 
