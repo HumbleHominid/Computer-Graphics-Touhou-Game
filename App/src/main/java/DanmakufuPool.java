@@ -12,14 +12,6 @@ public class DanmakufuPool {
     public DanmakufuPool() {
         _pool = new Danmakufu[2000];
 
-        fillPool();
-    }
-
-    public int getPoolSize() {
-        return _pool.length;
-    }
-
-    private void fillPool() {
         _pool[_pool.length - 1] = new Danmakufu();
         _pool[_pool.length - 1].setNext(null);
         _firstAvailable = _pool[_pool.length - 1];
@@ -31,6 +23,10 @@ public class DanmakufuPool {
             _pool[i] = newDan;
             _pool[i + 1].setNext(newDan);
         }
+    }
+
+    public int getPoolSize() {
+        return _pool.length;
     }
 
     public void update() {

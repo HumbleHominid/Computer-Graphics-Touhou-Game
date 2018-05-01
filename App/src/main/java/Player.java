@@ -34,8 +34,9 @@ public class Player {
         // set the input component
         _input = new PlayerInputComponent();
 
-        _particleSpawner = new ParticleSpawner(
-                new PlayerParticle(DanmakufuModels.FLOWER.getModel()));
+        Model playerModel = new Model("assets/images/player_particle", 2.0f);
+
+        _particleSpawner = new ParticleSpawner(new PlayerParticle(playerModel));
 
         for (int i = 0; i < _particlePool.length; i++) {
             _particlePool[i] = _particleSpawner.spawnParticle();

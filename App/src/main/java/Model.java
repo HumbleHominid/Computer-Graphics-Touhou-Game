@@ -20,9 +20,10 @@ public class Model {
     //  probably be handled outside of this class
     private float _scale;
 
-    public Model(String vertShaderPath, String fragShaderPath,
-            String texturePath, float scale) {
+    public Model(String texturePath, float scale) {
         _scale = scale;
+        String vertShaderPath = "assets/GLSL/vertex/image.shader";
+        String fragShaderPath = "assets/GLSL/fragment/image.shader";
         _renderingProgram = createShaderProgram(vertShaderPath, fragShaderPath);
         _texture = loadTexture(texturePath);
         setupVertices();

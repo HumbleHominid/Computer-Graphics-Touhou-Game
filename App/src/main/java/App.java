@@ -208,9 +208,7 @@ public class App extends JFrame implements GLEventListener, KeyListener {
 
         // create a new player
         _player = new Player();
-        _player.setModel(new Model("assets/GLSL/vertex/player.shader",
-                "assets/GLSL/fragment/player.shader", "assets/images/juice.jpg",
-                75.0f));
+        _player.setModel(new Model("assets/images/juice.jpg", 75.0f));
 
         // Testing stuff; please ignore
         if (false) {
