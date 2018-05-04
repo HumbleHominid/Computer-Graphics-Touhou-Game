@@ -105,7 +105,7 @@ public class Player {
 
         // Draw the orbitals
         for (Orbital o : _orbitals) {
-            o.render(glAD, elapsed, pMat, hMat);
+            o.render(glAD, elapsed, pMat, (Matrix3D) hMat.clone());
         }
     }
 

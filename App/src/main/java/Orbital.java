@@ -3,29 +3,32 @@ import graphicslib3D.*;
 import static com.jogamp.opengl.GL4.*;
 import com.jogamp.opengl.*;
 
+import java.util.Random;
+
 public class Orbital {
     private Model _model;
 
     private double _radius;
     private double _angle; // in degrees
-    private double _rate = 0.03; // degrees moved per update
+    private double _rate; // degrees moved per update
 
     public Orbital(Model model) {
         _model = model;
 
-        _radius = 2.0f;
-        _angle = System.currentTimeMillis() % 360;
+        Random rand = new Random(System.nanoTime());
+
+        _radius = 1.0f + rand.nextDouble();
+        _angle = rand.nextInt(360);
+        _rate = rand.nextDouble() / 20;
     }
 
     public void render(GLAutoDrawable glAD, double elapsed, Matrix3D pMat,
             Matrix3D hMat) {
         GL4 gl = (GL4) glAD.getGL();
 
-        Matrix3D mMat = hMat;
-
         double newAngle = _angle + (_rate * elapsed);
 
-        mMat.translate(_radius * Math.sin(newAngle), _radius * Math.cos(newAngle), 0.0f);
+        hMat.translate(_radius * Math.sin(newAngle), _radius * Math.cos(newAngle), 0.0f);
 
         // Get pointers to the matrix locations
         int m_loc = gl.glGetUniformLocation(_model.getRenderingProgram(),
@@ -34,7 +37,7 @@ public class Orbital {
                 "p_matrix");
 
         // Bind matrices
-        gl.glUniformMatrix4fv(m_loc, 1, false, mMat.getFloatValues(), 0);
+        gl.glUniformMatrix4fv(m_loc, 1, false, hMat.getFloatValues(), 0);
         gl.glUniformMatrix4fv(p_loc, 1, false, pMat.getFloatValues(), 0);
 
         // Set up arrays to draw
