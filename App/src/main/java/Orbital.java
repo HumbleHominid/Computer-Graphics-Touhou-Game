@@ -23,43 +23,12 @@ public class Orbital {
     }
 
     public void render(GLAutoDrawable glAD, double elapsed, Matrix3D pMat,
-            Matrix3D hMat) {
-        GL4 gl = (GL4) glAD.getGL();
-
+            Matrix3D mMat) {
         double newAngle = _angle + (_rate * elapsed);
 
-        hMat.translate(_radius * Math.sin(newAngle), _radius * Math.cos(newAngle), 0.0f);
+        mMat.translate(_radius * Math.sin(newAngle), _radius * Math.cos(newAngle), 0.0f);
 
-        // Get pointers to the matrix locations
-        int m_loc = gl.glGetUniformLocation(_model.getRenderingProgram(),
-                "mv_matrix");
-        int p_loc = gl.glGetUniformLocation(_model.getRenderingProgram(),
-                "p_matrix");
-
-        // Bind matrices
-        gl.glUniformMatrix4fv(m_loc, 1, false, hMat.getFloatValues(), 0);
-        gl.glUniformMatrix4fv(p_loc, 1, false, pMat.getFloatValues(), 0);
-
-        // Set up arrays to draw
-        gl.glBindBuffer(GL_ARRAY_BUFFER, _model.getVBO()[0]);
-        gl.glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
-        gl.glEnableVertexAttribArray(0);
-
-        gl.glBindBuffer(GL_ARRAY_BUFFER, _model.getVBO()[1]);
-        gl.glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
-        gl.glEnableVertexAttribArray(1);
-
-        // Blend the pixels
-        gl.glEnable(GL_BLEND);
-        gl.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        gl.glBlendEquation(GL_FUNC_ADD);
-
-        // activate the textures
-        gl.glActiveTexture(GL_TEXTURE0);
-        gl.glBindTexture(GL_TEXTURE_2D, _model.getTexture().getTextureObject());
-
-        // Draw the thing
-        gl.glDrawArrays(GL_TRIANGLES, 0, 6);
+        Renderer.render(glAD, pMat, mMat, _model);
     }
 
     public void update() {

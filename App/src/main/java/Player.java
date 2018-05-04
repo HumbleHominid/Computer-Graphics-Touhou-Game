@@ -56,15 +56,10 @@ public class Player {
     }
 
     public void render(GLAutoDrawable glAD, double elapsed, Matrix3D pMat) {
-        GL4 gl = (GL4) glAD.getGL();
-
         // draw the particles
         for (Particle p : _particlePool) {
             p.render(glAD, elapsed, pMat);
         }
-
-        // Use the rendering program associated with the model
-        gl.glUseProgram(_model.getRenderingProgram());
 
         // Make the model matrix
         Matrix3D mMat = new Matrix3D();
@@ -77,31 +72,7 @@ public class Player {
         // scale
         mMat.scale(_model.getScale(), _model.getScale(), 0.0f);
 
-        // Get pointers to the matrix locations
-        int m_loc = gl.glGetUniformLocation(_model.getRenderingProgram(),
-                "mv_matrix");
-        int p_loc = gl.glGetUniformLocation(_model.getRenderingProgram(),
-                "p_matrix");
-
-        // Bind matrices
-        gl.glUniformMatrix4fv(m_loc, 1, false, mMat.getFloatValues(), 0);
-        gl.glUniformMatrix4fv(p_loc, 1, false, pMat.getFloatValues(), 0);
-
-        // Set up arrays to draw
-        gl.glBindBuffer(GL_ARRAY_BUFFER, _model.getVBO()[0]);
-        gl.glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
-        gl.glEnableVertexAttribArray(0);
-
-        gl.glBindBuffer(GL_ARRAY_BUFFER, _model.getVBO()[1]);
-        gl.glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
-        gl.glEnableVertexAttribArray(1);
-
-        // activate the textures
-        gl.glActiveTexture(GL_TEXTURE0);
-        gl.glBindTexture(GL_TEXTURE_2D, _model.getTexture().getTextureObject());
-
-        // Draw the thing
-        gl.glDrawArrays(GL_TRIANGLES, 0, 6);
+        Renderer.render(glAD, pMat, mMat, _model);
 
         // Draw the orbitals
         for (Orbital o : _orbitals) {
