@@ -73,7 +73,7 @@ public class Player {
         int p_loc = gl.glGetUniformLocation(_model.getRenderingProgram(),
                 "p_matrix");
 
-        // Bind matricies
+        // Bind matrices
         gl.glUniformMatrix4fv(m_loc, 1, false, mMat.getFloatValues(), 0);
         gl.glUniformMatrix4fv(p_loc, 1, false, pMat.getFloatValues(), 0);
 
