@@ -10,7 +10,7 @@ public class DanmakufuPool {
     private Danmakufu _firstAvailable;
 
     public DanmakufuPool() {
-        _pool = new Danmakufu[2000];
+        _pool = new Danmakufu[100];
 
         _pool[_pool.length - 1] = new Danmakufu();
         _pool[_pool.length - 1].setNext(null);

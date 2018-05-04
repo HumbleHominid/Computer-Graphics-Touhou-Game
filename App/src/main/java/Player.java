@@ -22,6 +22,8 @@ public class Player {
     private Particle[] _particlePool = new Particle[200];
     private ParticleSpawner _particleSpawner;
 
+    private Orbital[] _orbitals = new Orbital[6];
+
     public Player() {
         // set the initial position
         _x = 500.0;
@@ -40,6 +42,12 @@ public class Player {
 
         for (int i = 0; i < _particlePool.length; i++) {
             _particlePool[i] = _particleSpawner.spawnParticle();
+        }
+
+        for (int i = 0; i < _orbitals.length; i++) {
+            Model orbitalModel = new Model("assets/images/orbital.png", 100.0f);
+
+            _orbitals[i] = new Orbital(orbitalModel);
         }
     }
 
@@ -60,9 +68,11 @@ public class Player {
 
         // Make the model matrix
         Matrix3D mMat = new Matrix3D();
+        Matrix3D hMat; // Matrix to pass for hierarchical Modeling
 
         // translate
         mMat.translate(_x, _y, 0.0f);
+        hMat = mMat;
 
         // scale
         mMat.scale(_model.getScale(), _model.getScale(), 0.0f);
@@ -92,11 +102,20 @@ public class Player {
 
         // Draw the thing
         gl.glDrawArrays(GL_TRIANGLES, 0, 6);
+
+        // Draw the orbitals
+        for (Orbital o : _orbitals) {
+            o.render(glAD, elapsed, pMat, hMat);
+        }
     }
 
     public void update() {
         for (Particle p : _particlePool) {
             p.update();
+        }
+
+        for (Orbital o : _orbitals) {
+            o.update();
         }
     }
 
@@ -106,7 +125,8 @@ public class Player {
         //create a new particle
         for (Particle p : _particlePool) {
             if (!p.isInUse()) {
-                ((PlayerParticle) p).init(_x, _y, new Random(System.nanoTime()).nextInt() % 300);
+                ((PlayerParticle) p).init(_x, _y,
+                        new Random(System.nanoTime()).nextInt() % 300);
                 return;
             }
         }
